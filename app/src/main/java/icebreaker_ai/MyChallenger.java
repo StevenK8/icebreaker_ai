@@ -22,9 +22,11 @@ public class MyChallenger implements IChallenger {
     private ArrayList<Point> redPoints = new ArrayList<Point>();
     private ArrayList<Point> blackPoints = new ArrayList<Point>();
 
+    private String role;
+
 
     public MyChallenger() {
-        // TODO Auto-generated method stub
+        role = "";
     }
 
     @Override
@@ -34,13 +36,23 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public void setRole(String role) {
-        // TODO Auto-generated method stub
+        this.role = role;
         
+    }
+
+    private int convertLetterToIndex(char c){
+        int index = (c - 65);
+        return index;
     }
 
     @Override
     public void iPlay(String move) {
-        // TODO Auto-generated method stub
+        if(move.length() == 5){
+            ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
+            System.out.println(deplacement.get(1));
+            //int indexOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
+            //int indexDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
+        }
         
     }
 
@@ -58,20 +70,29 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public String victory() {
-        // TODO Auto-generated method stub
-        return null;
+        String res = redScore==MAXSCORE ? "RED" : blackScore==MAXSCORE ? "BLACK" : "";
+
+        if(res != ""){
+            res += " WINS !";
+        }
+
+        return res;
     }
 
     @Override
     public String defeat() {
-        // TODO Auto-generated method stub
-        return null;
+        String res = redScore==MAXSCORE ? "BLACK" : blackScore==MAXSCORE ? "RED" : "";
+
+        if(res != ""){
+            res += " LOSE !";
+        }
+
+        return res;
     }
 
     @Override
     public String tie() {
-        // TODO Auto-generated method stub
-        return null;
+        return "égalité";
     }
 
     private String getLigneToString(int ligne){
