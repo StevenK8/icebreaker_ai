@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-
 public class MyChallenger implements IChallenger {
     private final static int MAXSCORE = 28;
     private int redScore = 0;
@@ -20,7 +19,6 @@ public class MyChallenger implements IChallenger {
 
     private ArrayList<Point> redPoints = new ArrayList<Point>();
     private ArrayList<Point> blackPoints = new ArrayList<Point>();
-
 
     public MyChallenger() {
         // TODO Auto-generated method stub
@@ -34,19 +32,19 @@ public class MyChallenger implements IChallenger {
     @Override
     public void setRole(String role) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void iPlay(String move) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void otherPlay(String move) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -73,9 +71,9 @@ public class MyChallenger implements IChallenger {
         return null;
     }
 
-    private String getLigneToString(int ligne){
+    private String getLigneToString(int ligne) {
         String res = "";
-        for(String s : board.get(ligne)){
+        for (String s : board.get(ligne)) {
             res += s + " ";
         }
         return res;
@@ -100,31 +98,30 @@ public class MyChallenger implements IChallenger {
     @Override
     public void setBoardFromFile(String filename) {
         try (// read file and set board
-        InputStream ioStream = this.getClass()
-        .getClassLoader()
-        .getResourceAsStream(filename);
-        InputStreamReader streamReader = new InputStreamReader(ioStream, StandardCharsets.UTF_8);
-        BufferedReader reader = new BufferedReader(streamReader);
-    ) {
+                InputStream ioStream = this.getClass()
+                        .getClassLoader()
+                        .getResourceAsStream(filename);
+                InputStreamReader streamReader = new InputStreamReader(ioStream, StandardCharsets.UTF_8);
+                BufferedReader reader = new BufferedReader(streamReader);) {
             int l = 1;
             // String line = br.readLine();
             for (String line; (line = reader.readLine()) != null;) {
-                if (l==1){
+                if (l == 1) {
                     redScore = Integer.parseInt(line.trim().split("\\s+")[3]);
                     blackScore = Integer.parseInt(line.trim().split("\\s+")[8]);
-                }else if (l>=3){
+                } else if (l >= 3) {
                     ArrayList<String> a = new ArrayList<String>(Arrays.asList(line.trim().split("\\s+")));
                     System.out.println(a);
                     a.remove(0);
                     board.add(a);
-                    if (line.contains("R") || line.contains("B")){
+                    if (line.contains("R") || line.contains("B")) {
                         int i = 0;
-                        for (String s : line.trim().split("\\s+")){
+                        for (String s : line.trim().split("\\s+")) {
                             i++;
-                            if (s.contains("R")){
-                                redPoints.add(new Point(l-3,i));
-                            }else if (s.contains("B")){
-                                blackPoints.add(new Point(l-3,i));
+                            if (s.contains("R")) {
+                                redPoints.add(new Point(l - 3, i));
+                            } else if (s.contains("B")) {
+                                blackPoints.add(new Point(l - 3, i));
                             }
                         }
                     }
@@ -141,6 +138,5 @@ public class MyChallenger implements IChallenger {
         // TODO Auto-generated method stub
         return null;
     }
-    
-    
+
 }
