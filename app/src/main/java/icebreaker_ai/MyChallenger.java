@@ -3,6 +3,7 @@ package app.src.main.java.icebreaker_ai;
 import java.util.Set;
 
 public class MyChallenger implements IChallenger {
+    
     public MyChallenger() {
         // TODO Auto-generated method stub
     }
@@ -63,7 +64,7 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public void setBoardFromFile(String filename) {
-        // read file and set board      
+        // read file and set board 
     }
 
     @Override
