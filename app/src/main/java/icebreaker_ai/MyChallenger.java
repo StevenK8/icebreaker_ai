@@ -208,44 +208,26 @@ public class MyChallenger implements IChallenger {
     private Set<String> getPossibleMoves(ArrayList<Point> points) {
         Set<String> res = new java.util.HashSet<String>();
         for (Point p : points) {
-            System.out.println(p);
-            // Check nearby points in the hexagonal grid
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    if (i == 0 && j == 0) {
-                        continue;
-                    }
-                    int x = p.x + i;
-                    int y = p.y + j;
-                    if(p.x>(board.size()/2)){
-                        if(i==-1){
-                            y--;
-                        }else if(i==1){
-                            y++;
-                        }
-                    }else if (p.x<board.size()/2){
-                        if(i==-1){
-                            y++;
-                        }else if(i==1){
-                            y--;
-                        }
-                    }else{
-                        if(i==-1){
-                            y--;
-                        }else if(i==1){
-                            y--;
-                        }
-                    }
-                    // System.out.println(convertIndexToLetter(x) + y);
+            // Check ligne au dessus plus grande
+            if(board.get((p.x) - 1).size() > board.get(p.x).size()){
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
+            }
+            // Check ligne au dessus plus petite
+            else if(board.get((p.x) - 1).size() < board.get(p.x).size()){
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y - 1));
+            }
 
-                    if (x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()) {
-                        if (board.get(x).get(y).equals("\u2022") || board.get(x).get(y).equals("o")) {
-                            // System.out.println("(" + x + "," + y + ")");
-                            String move = convertIndexToLetter(p.x) + p.y + "-" + convertIndexToLetter(x) + y;
-                            res.add(move);
-                        }
-                    }
-                }
+            //check ligne en dessous plus grande
+            if(board.get((p.x) + 1).size() > board.get(p.x).size()){
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+            }
+            //check ligne en dessous plus petite
+            else if(board.get((p.x) + 1).size() < board.get(p.x).size()){
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
+                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y - 1));
             }
         }
         return res;
