@@ -27,7 +27,14 @@ public interface IChallenger{
 
     String defeat();
 
+    /**
+    * L’arbitre vous signale que la parties s’est soldée par une égalité.
+    * @return un petit message ou une bannière de partie nulle.
+    */
     String tie();
+
+
+    // −−−−−−−−−−−−−−−−−−−−−− Fonctions pour les tests −−−−−−−−−−−−−−−−−−−−−
 
     /**
     * Vous devez renvoyer une chaîne de caractères décrivant l’état du plateau.
@@ -41,6 +48,12 @@ public interface IChallenger{
     */
     void setBoardFromFile(String filename);
 
+    /**
+    * Vous devez renvoyer l’ensemble des coups possibles pour l’un des joueurs (d’après l’état actuel du
+    plateau dans votre représentation interne).
+    * @param role le rôle du joueur dont il faut renvoyer les coups ( "RED" ou "BLACK" )
+    * @return l’ ensemble de coups possibles pour le joueur désigé ( sous la forme "D2−C2 " )
+    */
     Set<String> possibleMoves(String role);
 }
 
