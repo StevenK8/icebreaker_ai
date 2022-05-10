@@ -88,11 +88,22 @@ public class MyChallenger implements IChallenger {
                     redScore = Integer.parseInt(line.split(" ")[3]);
                     blackScore = Integer.parseInt(line.split(" ")[8]);
                 }else if (l>=3){
-                    pos = Integer.parseInt(line.split(" ")[0])-65;
-                    board.set(pos,new ArrayList<String>(Arrays.asList(line.split(" "))));
-                    board.get(pos).remove(0);
-                    
+                    board.set(l-3,new ArrayList<String>(Arrays.asList(line.split(" "))));
+                    board.get(l-3).remove(0);
+                    if (line.contains("R") || line.contains("B")){
+                        int i = 0;
+                        for (String s : line.split(" ")){
+                            i++;
+                            if (s.contains("R")){
+                                redPoints.add(new Point(l-3,i));
+                            }else if (s.contains("B")){
+                                blackPoints.add(new Point(l-3,i));
+                            }
+                        }
+                    }
                 }
+                line = br.readLine();
+                l++;
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
