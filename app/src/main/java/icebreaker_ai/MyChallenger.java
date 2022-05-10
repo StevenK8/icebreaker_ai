@@ -49,42 +49,54 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public void iPlay(String move) {
-        if(move.length() == 5){
+        ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
+        int ligneOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
+        int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
 
-            ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
-            int ligneOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
-            int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
+        int ligneDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
+        int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
 
-            int ligneDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
-            int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
+        String joueurActuel = role.equals("RED") ? "R" : "B";
+        //reset l'ancienne position du bateau à .
+        board.get(ligneOrigine).set(colonneOrigine, ".");
 
-            String joueurActuel = board.get(ligneOrigine).get(colonneOrigine).equals("R") ? "R" : board.get(ligneOrigine).get(colonneOrigine).equals("B") ? "B" : "NULL";
-
-            //check si la position d'origine est valide
-            if(joueurActuel != "NULL"){
-                //reset l'ancienne position du bateau à .
-                board.get(ligneOrigine).set(colonneOrigine, ".");
-
-                //on se déplace sur un iceberg --> on augmente le score du bon joueur
-                if(board.get(ligneDestination).get(colonneDestination).equals(".")
-                    && joueurActuel.equals("R")){
-                    redScore++;
-                }
-                else if(board.get(ligneDestination).get(colonneDestination).equals(".")
-                        && joueurActuel.equals("B")){
-                    blackScore++;
-                }
-                //set la nouvelle position à R ou B
-                board.get(ligneDestination).set(colonneDestination, joueurActuel);
-            }
-
+        //on se déplace sur un iceberg --> on augmente le score du bon joueur
+        if(board.get(ligneDestination).get(colonneDestination).equals(".")
+            && joueurActuel.equals("R")){
+            redScore++;
         }
-        
+        else if(board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("B")){
+            blackScore++;
+        }
+        //set la nouvelle position à R ou B
+        board.get(ligneDestination).set(colonneDestination, joueurActuel);
     }
 
     @Override
     public void otherPlay(String move) {
-        // TODO Auto-generated method stub
+        ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
+        int ligneOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
+        int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
+
+        int ligneDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
+        int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
+
+        String joueurActuel = board.get(ligneOrigine).get(colonneOrigine).equals("R") ? "R" : "B";
+        //reset l'ancienne position du bateau à .
+        board.get(ligneOrigine).set(colonneOrigine, ".");
+
+        //on se déplace sur un iceberg --> on augmente le score du bon joueur
+        if(board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("R")){
+            redScore++;
+        }
+        else if(board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("B")){
+            blackScore++;
+        }
+        //set la nouvelle position à R ou B
+        board.get(ligneDestination).set(colonneDestination, joueurActuel);
         
     }
 
