@@ -1,4 +1,4 @@
-package app.src.main.java.icebreaker_ai;
+package icebreaker_ai;
 import java.util.Set;
 
 public interface IChallenger{

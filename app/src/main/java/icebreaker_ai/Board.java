@@ -1,4 +1,4 @@
-package app.src.main.java.icebreaker_ai;
+package icebreaker_ai;
 
 public class Board {
     public static void main(String[] args) {

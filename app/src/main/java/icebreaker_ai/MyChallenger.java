@@ -1,17 +1,27 @@
-package app.src.main.java.icebreaker_ai;
+package icebreaker_ai;
 
+import java.util.ArrayList;
 import java.util.Set;
+import java.awt.Point;
+
 
 public class MyChallenger implements IChallenger {
-    
+    private final static int MAXSCORE = 28;
+    private int redScore = 0;
+    private int blackScore = 0;
+    private ArrayList<ArrayList<String>> board = new ArrayList<ArrayList<String>>();
+
+    private ArrayList<Point> redPoints = new ArrayList<Point>();
+    private ArrayList<Point> blackPoints = new ArrayList<Point>();
+
+
     public MyChallenger() {
         // TODO Auto-generated method stub
     }
 
     @Override
     public String teamName() {
-        // TODO Auto-generated method stub
-        return null;
+        return "Steven Kerautret - Damien Chancerel";
     }
 
     @Override
@@ -64,7 +74,7 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public void setBoardFromFile(String filename) {
-        // read file and set board 
+        // read file and set board     
     }
 
     @Override
