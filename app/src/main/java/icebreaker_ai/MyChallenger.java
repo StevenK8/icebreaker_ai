@@ -172,8 +172,8 @@ public class MyChallenger implements IChallenger {
     private Set<String> getPossibleMoves(ArrayList<Point> points) {
         Set<String> res = new java.util.HashSet<String>();
         for (Point p : points) {
-            // System.out.println(p);
-            // Check nearby points
+            System.out.println(p);
+            // Check nearby points in the hexagonal grid
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
                     if (i == 0 && j == 0) {
@@ -181,6 +181,21 @@ public class MyChallenger implements IChallenger {
                     }
                     int x = p.x + i;
                     int y = p.y + j;
+                    if(p.x>board.size()/2){
+                        if(i==-1){
+                            y++;
+                        }else if(i==1){
+                            y--;
+                        }
+                    }else if (p.x<board.size()/2){
+                        if(i==-1){
+                            y--;
+                        }else if(i==1){
+                            y++;
+                        }
+                    }
+                    // System.out.println(convertIndexToLetter(x) + y);
+
                     if (x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()) {
                         if (board.get(x).get(y).equals("\u2022") || board.get(x).get(y).equals("o")) {
                             // System.out.println("(" + x + "," + y + ")");
