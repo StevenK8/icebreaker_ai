@@ -89,7 +89,9 @@ public class MyChallenger implements IChallenger {
                     blackScore = Integer.parseInt(line.split(" ")[8]);
                 }else if (l>=3){
                     pos = Integer.parseInt(line.split(" ")[0])-65;
-                    board.set(pos,Arrays.asList(line.split(" ")));
+                    board.set(pos,new ArrayList<String>(Arrays.asList(line.split(" "))));
+                    board.get(pos).remove(0);
+                    
                 }
             }
         } catch (IOException e) {
