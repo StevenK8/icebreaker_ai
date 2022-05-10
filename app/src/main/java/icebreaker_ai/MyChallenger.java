@@ -33,6 +33,7 @@ public class MyChallenger implements IChallenger {
     @Override
     public void setRole(String role) {
         this.role = role;
+        
     }
 
     private int convertLetterToIndex(char c) {
@@ -48,20 +49,55 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public void iPlay(String move) {
-        if (move.length() == 5) {
-            ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
-            System.out.println(deplacement.get(1));
-            // int indexOrigine = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
-            // int indexDestination =
-            // convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
-        }
+        ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
+        int ligneOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
+        int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
 
+        int ligneDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
+        int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
+
+        String joueurActuel = role.equals("RED") ? "R" : "B";
+        //reset l'ancienne position du bateau à .
+        board.get(ligneOrigine).set(colonneOrigine, ".");
+
+        //on se déplace sur un iceberg --> on augmente le score du bon joueur
+        if(board.get(ligneDestination).get(colonneDestination).equals(".")
+            && joueurActuel.equals("R")){
+            redScore++;
+        }
+        else if(board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("B")){
+            blackScore++;
+        }
+        //set la nouvelle position à R ou B
+        board.get(ligneDestination).set(colonneDestination, joueurActuel);
     }
 
     @Override
     public void otherPlay(String move) {
-        // TODO Auto-generated method stub
+        ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
+        int ligneOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
+        int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
 
+        int ligneDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
+        int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
+
+        String joueurActuel = board.get(ligneOrigine).get(colonneOrigine).equals("R") ? "R" : "B";
+        //reset l'ancienne position du bateau à .
+        board.get(ligneOrigine).set(colonneOrigine, ".");
+
+        //on se déplace sur un iceberg --> on augmente le score du bon joueur
+        if(board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("R")){
+            redScore++;
+        }
+        else if(board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("B")){
+            blackScore++;
+        }
+        //set la nouvelle position à R ou B
+        board.get(ligneDestination).set(colonneDestination, joueurActuel);
+        
     }
 
     @Override
@@ -72,9 +108,9 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public String victory() {
-        String res = redScore == MAXSCORE ? "RED" : blackScore == MAXSCORE ? "BLACK" : "";
+        String res = redScore==MAXSCORE ? "RED" : blackScore==MAXSCORE ? "BLACK" : "";
 
-        if (res != "") {
+        if(res != ""){
             res += " WINS !";
         }
 
@@ -83,9 +119,9 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public String defeat() {
-        String res = redScore == MAXSCORE ? "BLACK" : blackScore == MAXSCORE ? "RED" : "";
+        String res = redScore==MAXSCORE ? "BLACK" : blackScore==MAXSCORE ? "RED" : "";
 
-        if (res != "") {
+        if(res != ""){
             res += " LOSE !";
         }
 
@@ -150,12 +186,12 @@ public class MyChallenger implements IChallenger {
                         if (line.contains("R") || line.contains("B")) {
                             int i = 0;
                             for (String s : line.trim().split("\\s+")) {
+                                i++;
                                 if (s.contains("R")) {
                                     redPoints.add(new Point(l - 3, i));
                                 } else if (s.contains("B")) {
                                     blackPoints.add(new Point(l - 3, i));
                                 }
-                                i++;
                             }
                         }
                     }
