@@ -2,16 +2,13 @@ package icebreaker_ai;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Set;
 import java.awt.Point;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-
 
 public class MyChallenger implements IChallenger {
     private final static int MAXSCORE = 28;
@@ -23,7 +20,6 @@ public class MyChallenger implements IChallenger {
     private ArrayList<Point> blackPoints = new ArrayList<Point>();
 
     private String role;
-
 
     public MyChallenger() {
         role = "";
@@ -37,20 +33,18 @@ public class MyChallenger implements IChallenger {
     @Override
     public void setRole(String role) {
         this.role = role;
+        
     }
 
-    private String getRole(){
-        if(role.equals("RED")){
-            return "R";
-        }
-        else{
-            return "B";
-        }
-    }
-
-    private int convertLetterToIndex(char c){
+    private int convertLetterToIndex(char c) {
         int index = (c - 65);
         return index;
+    }
+
+    private String convertIndexToLetter(int i) {
+        String letter = "";
+        letter += (char) (i + 65);
+        return letter;
     }
 
     @Override
@@ -127,13 +121,14 @@ public class MyChallenger implements IChallenger {
         return "égalité";
     }
 
-    private String getLigneToString(int ligne){
+    private String getLigneToString(int ligne) {
         String res = "";
-        for(String s : board.get(ligne)){
-            if(s.equals("\u2022")){
-                res += "•" + " ";
-            }
-            else{
+        for (String s : board.get(ligne)) {
+            if (s.equals("\u2022")) {
+                // res += "•" + " ";
+                // TODO : restauter le caractère "•"
+                res += "." + " ";
+            } else {
                 res += s + " ";
             }
 
@@ -191,17 +186,47 @@ public class MyChallenger implements IChallenger {
                     l++;
                 }
             } catch (Exception e) {
-                System.out.println("Unreadable file Error : "+e);
+                System.out.println("Unreadable file Error : " + e);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    private Set<String> getPossibleMoves(ArrayList<Point> points) {
+        Set<String> res = new java.util.HashSet<String>();
+        for (Point p : points) {
+            // System.out.println(p);
+            // Check nearby points
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (i == 0 && j == 0) {
+                        continue;
+                    }
+                    int x = p.x + i;
+                    int y = p.y + j;
+                    if (x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()) {
+                        if (board.get(x).get(y).equals("\u2022") || board.get(x).get(y).equals("o")) {
+                            // System.out.println("(" + x + "," + y + ")");
+                            String move = convertIndexToLetter(p.x) + p.y + "-" + convertIndexToLetter(x) + y;
+                            res.add(move);
+                        }
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
     @Override
     public Set<String> possibleMoves(String role) {
-        // TODO Auto-generated method stub
-        return null;
+        if (role.equals("RED")) {
+            return getPossibleMoves(redPoints);
+        } else if (role.equals("BLACK")) {
+            return getPossibleMoves(blackPoints);
+        } else {
+            return null;
+        }
     }
 
 }
