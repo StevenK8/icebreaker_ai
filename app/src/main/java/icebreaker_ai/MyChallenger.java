@@ -97,36 +97,39 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public void setBoardFromFile(String filename) {
-        try (// read file and set board
+        try (
                 InputStream ioStream = this.getClass()
                         .getClassLoader()
                         .getResourceAsStream(filename);
                 InputStreamReader streamReader = new InputStreamReader(ioStream, StandardCharsets.UTF_8);
                 BufferedReader reader = new BufferedReader(streamReader);) {
             int l = 1;
-            // String line = br.readLine();
-            for (String line; (line = reader.readLine()) != null;) {
-                if (l == 1) {
-                    redScore = Integer.parseInt(line.trim().split("\\s+")[3]);
-                    blackScore = Integer.parseInt(line.trim().split("\\s+")[8]);
-                } else if (l >= 3) {
-                    ArrayList<String> a = new ArrayList<String>(Arrays.asList(line.trim().split("\\s+")));
-                    // System.out.println(a);
-                    a.remove(0);
-                    board.add(a);
-                    if (line.contains("R") || line.contains("B")) {
-                        int i = 0;
-                        for (String s : line.trim().split("\\s+")) {
-                            i++;
-                            if (s.contains("R")) {
-                                redPoints.add(new Point(l - 3, i));
-                            } else if (s.contains("B")) {
-                                blackPoints.add(new Point(l - 3, i));
+            try {
+                for (String line; (line = reader.readLine()) != null;) {
+                    if (l == 1) {
+                        redScore = Integer.parseInt(line.trim().split("\\s+")[3]);
+                        blackScore = Integer.parseInt(line.trim().split("\\s+")[8]);
+                    } else if (l >= 3) {
+                        ArrayList<String> a = new ArrayList<String>(Arrays.asList(line.trim().split("\\s+")));
+                        // System.out.println(a);
+                        a.remove(0);
+                        board.add(a);
+                        if (line.contains("R") || line.contains("B")) {
+                            int i = 0;
+                            for (String s : line.trim().split("\\s+")) {
+                                i++;
+                                if (s.contains("R")) {
+                                    redPoints.add(new Point(l - 3, i));
+                                } else if (s.contains("B")) {
+                                    blackPoints.add(new Point(l - 3, i));
+                                }
                             }
                         }
                     }
+                    l++;
                 }
-                l++;
+            } catch (Exception e) {
+                System.out.println("Unreadable file Error : "+e);
             }
         } catch (IOException e) {
             e.printStackTrace();
