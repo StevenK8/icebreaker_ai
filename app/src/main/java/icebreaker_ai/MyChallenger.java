@@ -183,9 +183,9 @@ public class MyChallenger implements IChallenger {
                         // System.out.println(a);
                         a.remove(0);
                         board.add(a);
-                        if (line.contains("R") || line.contains("B")) {
+                        if (a.contains("R") || a.contains("B")) {
                             int i = 0;
-                            for (String s : line.trim().split("\\s+")) {
+                            for (String s : a) {
                                 i++;
                                 if (s.contains("R")) {
                                     redPoints.add(new Point(l - 3, i));
@@ -208,7 +208,7 @@ public class MyChallenger implements IChallenger {
     private Set<String> getPossibleMoves(ArrayList<Point> points) {
         Set<String> res = new java.util.HashSet<String>();
         for (Point p : points) {
-            System.out.println(p);
+            // System.out.println(p);
             // Check nearby points in the hexagonal grid
             for (int i = -1; i <= 1; i++) {
                 for (int j = -1; j <= 1; j++) {
