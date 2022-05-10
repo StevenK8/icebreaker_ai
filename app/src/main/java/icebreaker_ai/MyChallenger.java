@@ -1,8 +1,12 @@
 package icebreaker_ai;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import java.awt.Point;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 public class MyChallenger implements IChallenger {
@@ -74,7 +78,24 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public void setBoardFromFile(String filename) {
-        // read file and set board     
+        try (// read file and set board
+        BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            int l = 1;
+            int pos=0;
+            String line = br.readLine();
+            while (line != null) {
+                if (l==1){
+                    redScore = Integer.parseInt(line.split(" ")[3]);
+                    blackScore = Integer.parseInt(line.split(" ")[8]);
+                }else if (l>=3){
+                    pos = Integer.parseInt(line.split(" ")[0])-65;
+                    board.set(pos,Arrays.asList(line.split(" ")));
+                }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @Override
