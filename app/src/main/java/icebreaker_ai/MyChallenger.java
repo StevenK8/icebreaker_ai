@@ -2,6 +2,7 @@ package icebreaker_ai;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Set;
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -76,7 +77,13 @@ public class MyChallenger implements IChallenger {
     private String getLigneToString(int ligne){
         String res = "";
         for(String s : board.get(ligne)){
-            res += s + " ";
+            if(s.equals("\u2022")){
+                res += "•" + " ";
+            }
+            else{
+                res += s + " ";
+            }
+
         }
         return res;
     }
