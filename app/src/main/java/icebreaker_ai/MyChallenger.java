@@ -70,10 +70,28 @@ public class MyChallenger implements IChallenger {
         return null;
     }
 
+    private String getLigneToString(int ligne){
+        String res = "";
+        for(String s : board.get(ligne)){
+            res += s + " ";
+        }
+        return res;
+    }
+
     @Override
     public String boardToString() {
-        // TODO Auto-generated method stub
-        return null;
+        String res = "Red Score : " + redScore + " --- Black Score : " + blackScore + "\n\n";
+        res += "A     " + getLigneToString(0) + "     \n" +
+                "B    " + getLigneToString(1) + "    \n" +
+                "C   " + getLigneToString(2) + "   \n" +
+                "D  " + getLigneToString(3) + "  \n" +
+                "E " + getLigneToString(4) + " \n" +
+                "F  " + getLigneToString(5) + "  \n" +
+                "G   " + getLigneToString(6) + "   \n" +
+                "H    " + getLigneToString(7) + "    \n" +
+                "I     " + getLigneToString(8) + "     ";
+
+        return res;
     }
 
     @Override
