@@ -111,7 +111,7 @@ public class MyChallenger implements IChallenger {
                     blackScore = Integer.parseInt(line.trim().split("\\s+")[8]);
                 } else if (l >= 3) {
                     ArrayList<String> a = new ArrayList<String>(Arrays.asList(line.trim().split("\\s+")));
-                    System.out.println(a);
+                    // System.out.println(a);
                     a.remove(0);
                     board.add(a);
                     if (line.contains("R") || line.contains("B")) {
