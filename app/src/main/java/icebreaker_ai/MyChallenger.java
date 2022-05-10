@@ -81,7 +81,6 @@ public class MyChallenger implements IChallenger {
         try (// read file and set board
         BufferedReader br = new BufferedReader(new FileReader(filename))) {
             int l = 1;
-            int pos=0;
             String line = br.readLine();
             while (line != null) {
                 if (l==1){
