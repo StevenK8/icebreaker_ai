@@ -91,54 +91,56 @@ public class MyChallenger implements IChallenger {
     @Override
     public String boardToString() {
         String res = "Red Score : " + redScore + " --- Black Score : " + blackScore + "\n\n";
-        res += "A     " + getLigneToString(0) + "     \n" +
-                "B    " + getLigneToString(1) + "    \n" +
-                "C   " + getLigneToString(2) + "   \n" +
-                "D  " + getLigneToString(3) + "  \n" +
-                "E " + getLigneToString(4) + " \n" +
-                "F  " + getLigneToString(5) + "  \n" +
-                "G   " + getLigneToString(6) + "   \n" +
-                "H    " + getLigneToString(7) + "    \n" +
-                "I     " + getLigneToString(8) + "     ";
+        res += "A      " + getLigneToString(0) + "     \n" +
+                "B     " + getLigneToString(1) + "    \n" +
+                "C    " + getLigneToString(2) + "   \n" +
+                "D   " + getLigneToString(3) + "  \n" +
+                "E  " + getLigneToString(4) + " \n" +
+                "F   " + getLigneToString(5) + "  \n" +
+                "G    " + getLigneToString(6) + "   \n" +
+                "H     " + getLigneToString(7) + "    \n" +
+                "I      " + getLigneToString(8) + "     ";
 
         return res;
     }
 
     @Override
     public void setBoardFromFile(String filename) {
-        try (// read file and set board
-        InputStream ioStream = this.getClass()
-        .getClassLoader()
-        .getResourceAsStream(filename);
-        InputStreamReader streamReader = new InputStreamReader(ioStream, StandardCharsets.UTF_8);
-        BufferedReader reader = new BufferedReader(streamReader);
-    ) {
+        try (
+                InputStream ioStream = this.getClass()
+                        .getClassLoader()
+                        .getResourceAsStream(filename);
+                InputStreamReader streamReader = new InputStreamReader(ioStream, StandardCharsets.UTF_8);
+                BufferedReader reader = new BufferedReader(streamReader);) {
             int l = 1;
-            // String line = br.readLine();
-            for (String line; (line = reader.readLine()) != null;) {
-                if (l==1){
-                    redScore = Integer.parseInt(line.split(" ")[4]);
-                    blackScore = Integer.parseInt(line.split(" ")[9]);
-                }else if (l>=3){
-                    // board.set(l-3,new ArrayList<String>(Arrays.asList(line.split(" "))));
-                    board.add(new ArrayList<String>(Arrays.asList(line.split(" "))));
-                    board.get(l-3).remove(0);
-                    if (line.contains("R") || line.contains("B")){
-                        int i = 0;
-                        for (String s : line.split(" ")){
-                            i++;
-                            if (s.contains("R")){
-                                redPoints.add(new Point(l-3,i));
-                            }else if (s.contains("B")){
-                                blackPoints.add(new Point(l-3,i));
+            try {
+                for (String line; (line = reader.readLine()) != null;) {
+                    if (l == 1) {
+                        redScore = Integer.parseInt(line.trim().split("\\s+")[3]);
+                        blackScore = Integer.parseInt(line.trim().split("\\s+")[8]);
+                    } else if (l >= 3) {
+                        ArrayList<String> a = new ArrayList<String>(Arrays.asList(line.trim().split("\\s+")));
+                        // System.out.println(a);
+                        a.remove(0);
+                        board.add(a);
+                        if (line.contains("R") || line.contains("B")) {
+                            int i = 0;
+                            for (String s : line.trim().split("\\s+")) {
+                                i++;
+                                if (s.contains("R")) {
+                                    redPoints.add(new Point(l - 3, i));
+                                } else if (s.contains("B")) {
+                                    blackPoints.add(new Point(l - 3, i));
+                                }
                             }
                         }
                     }
+                    l++;
                 }
-                l++;
+            } catch (Exception e) {
+                System.out.println("Unreadable file Error : "+e);
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -148,6 +150,5 @@ public class MyChallenger implements IChallenger {
         // TODO Auto-generated method stub
         return null;
     }
-    
-    
+
 }
