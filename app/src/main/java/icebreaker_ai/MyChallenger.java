@@ -7,6 +7,9 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 
 public class MyChallenger implements IChallenger {
@@ -97,15 +100,21 @@ public class MyChallenger implements IChallenger {
     @Override
     public void setBoardFromFile(String filename) {
         try (// read file and set board
-        BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        InputStream ioStream = this.getClass()
+        .getClassLoader()
+        .getResourceAsStream(filename);
+        InputStreamReader streamReader = new InputStreamReader(ioStream, StandardCharsets.UTF_8);
+        BufferedReader reader = new BufferedReader(streamReader);
+    ) {
             int l = 1;
-            String line = br.readLine();
-            while (line != null) {
+            // String line = br.readLine();
+            for (String line; (line = reader.readLine()) != null;) {
                 if (l==1){
-                    redScore = Integer.parseInt(line.split(" ")[3]);
-                    blackScore = Integer.parseInt(line.split(" ")[8]);
+                    redScore = Integer.parseInt(line.split(" ")[4]);
+                    blackScore = Integer.parseInt(line.split(" ")[9]);
                 }else if (l>=3){
-                    board.set(l-3,new ArrayList<String>(Arrays.asList(line.split(" "))));
+                    // board.set(l-3,new ArrayList<String>(Arrays.asList(line.split(" "))));
+                    board.add(new ArrayList<String>(Arrays.asList(line.split(" "))));
                     board.get(l-3).remove(0);
                     if (line.contains("R") || line.contains("B")){
                         int i = 0;
@@ -119,7 +128,6 @@ public class MyChallenger implements IChallenger {
                         }
                     }
                 }
-                line = br.readLine();
                 l++;
             }
         } catch (IOException e) {
