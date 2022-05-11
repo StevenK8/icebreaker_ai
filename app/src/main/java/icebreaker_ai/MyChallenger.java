@@ -239,16 +239,23 @@ public class MyChallenger implements IChallenger {
 
     private Set<String> getPossibleMoves(ArrayList<Point> points) {
         Set<String> res = new java.util.HashSet<String>();
+        Set<String> resIfIceberg = new java.util.HashSet<String>();
         ArrayList<Point> possiblesPoint = new ArrayList<>();
 
         for (Point p : points) {
             //Check cases a coté
             if(isValid(p.x, p.y-1)){
                 possiblesPoint.add(new Point(p.x, p.y-1));
+                if(board.get(p.x).get(p.y-1).getValue().equals("o")){
+                    resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
+                }
                 res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
             }
             if(isValid(p.x, p.y + 1)){
                 possiblesPoint.add(new Point(p.x, p.y+1));
+                if(board.get(p.x).get(p.y+1).getValue().equals("o")){
+                    resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
+                }
                 res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y + 2));
             }
 
@@ -256,10 +263,16 @@ public class MyChallenger implements IChallenger {
             if(board.get((p.x) - 1).size() > board.get(p.x).size()){
                 if(isValid(p.x - 1,  p.y)){
                     possiblesPoint.add(new Point(p.x-1, p.y));
+                    if(board.get(p.x-1).get(p.y).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
+                    }
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
                 }
                 if(isValid(p.x - 1,  p.y + 1)){
                     possiblesPoint.add(new Point(p.x-1, p.y+1));
+                    if(board.get(p.x-1).get(p.y+1).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 2));
+                    }
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 2));
                 }
             }
@@ -267,10 +280,16 @@ public class MyChallenger implements IChallenger {
             else if(board.get((p.x) - 1).size() < board.get(p.x).size()){
                 if(isValid(p.x - 1,  p.y)){
                     possiblesPoint.add(new Point(p.x-1, p.y));
+                    if(board.get(p.x-1).get(p.y).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y+1));
+                    }
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y+1));
                 }
                 if(isValid(p.x - 1,  p.y-1)){
                     possiblesPoint.add(new Point(p.x-1, p.y-1));
+                    if(board.get(p.x-1).get(p.y-1).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
+                    }
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
                 }
             }
@@ -278,10 +297,16 @@ public class MyChallenger implements IChallenger {
             if(board.get((p.x) + 1).size() > board.get(p.x).size()){
                 if(isValid(p.x + 1,  p.y)){
                     possiblesPoint.add(new Point(p.x+1, p.y));
+                    if(board.get(p.x+1).get(p.y).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+                    }
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
                 }
                 if(isValid(p.x + 1,  p.y + 1)) {
                     possiblesPoint.add(new Point(p.x+1, p.y+1));
+                    if(board.get(p.x+1).get(p.y+1).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x) + (p.y + 1) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 2));
+                    }
                     res.add(convertIndexToLetter(p.x) + (p.y + 1) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 2));
                 }
             }
@@ -289,21 +314,28 @@ public class MyChallenger implements IChallenger {
             else if(board.get((p.x) + 1).size() < board.get(p.x).size()){
                 if(isValid(p.x + 1,  p.y)) {
                     possiblesPoint.add(new Point(p.x+1, p.y));
+                    if(board.get(p.x+1).get(p.y).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+                    }
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
                 }
                 if(isValid(p.x + 1,  p.y-1)) {
                     possiblesPoint.add(new Point(p.x, p.y-1));
+                    if(board.get(p.x).get(p.y-1).getValue().equals("o")){
+                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
+                    }
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
                 }
-              }
-
-
+            }
         }
 
-        //Check si un iceberg est proche --> on enleve les cases vides des possibles moves
-        //removeUselessMoves(possiblesPoint);
-
-        return res;
+        //Check si un iceberg est à coté --> on enleve les cases vides des possibles moves
+        if(resIfIceberg.isEmpty()){
+            return res;
+        }
+        else{
+            return resIfIceberg;
+        }
     }
 
     @Override
@@ -317,13 +349,14 @@ public class MyChallenger implements IChallenger {
         }
     }
 
-//    private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints) {
-//
-//        for(Point point : possiblePoints){
-//            if(board.get(point.x).get(point.y).equals("o")){
-//
-//            }
-//        }
-//    }
+    private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints) {
+        ArrayList<Point> resList = new ArrayList<>();
+        for(Point point : possiblePoints){
+            if(board.get(point.x).get(point.y).equals("o")){
+                resList.add(new Point(point.x, point.y));
+            }
+        }
+        return resList;
+    }
 
 }
