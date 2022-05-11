@@ -205,31 +205,81 @@ public class MyChallenger implements IChallenger {
         }
     }
 
+    private boolean isValid(int x, int y){
+        try{
+            if(!board.get(x).isEmpty() || !board.get(x).get(y).isEmpty()){
+                if(x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()){
+                    if(board.get(x).get(y).equals("\u2022") || board.get(x).get(y).equals("o")){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+            return false;
+        }
+        return false;
+    }
+
     private Set<String> getPossibleMoves(ArrayList<Point> points) {
         Set<String> res = new java.util.HashSet<String>();
         for (Point p : points) {
+            //Check cases a coté
+            if(isValid(p.x, p.y-1)){
+                res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
+            }
+            if(isValid(p.x, p.y + 1)){
+                res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y + 2));
+            }
+
             // Check ligne au dessus plus grande
             if(board.get((p.x) - 1).size() > board.get(p.x).size()){
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
+                if(isValid(p.x - 1,  p.y)){
+                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
+                }
+                if(isValid(p.x - 1,  p.y + 1)){
+                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 2));
+                }
             }
             // Check ligne au dessus plus petite
             else if(board.get((p.x) - 1).size() < board.get(p.x).size()){
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)-1)+(p.y - 1));
+                if(isValid(p.x - 1,  p.y)){
+                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y+1));
+                }
+                if(isValid(p.x - 1,  p.y-1)){
+                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
+                }
             }
 
             //check ligne en dessous plus grande
             if(board.get((p.x) + 1).size() > board.get(p.x).size()){
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+                if(isValid(p.x + 1,  p.y)){
+                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+                }
+                if(isValid(p.x + 1,  p.y + 1)) {
+                    res.add(convertIndexToLetter(p.x) + (p.y + 1) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 2));
+                }
             }
             //check ligne en dessous plus petite
             else if(board.get((p.x) + 1).size() < board.get(p.x).size()){
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
-                res.add(convertIndexToLetter(p.x)+ p.y +"-"+ convertIndexToLetter((p.x)+1)+(p.y - 1));
-            }
+                if(isValid(p.x + 1,  p.y)) {
+                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+                }
+                if(isValid(p.x + 1,  p.y-1)) {
+                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
+                }
+              }
+
+
         }
+
         return res;
     }
 
