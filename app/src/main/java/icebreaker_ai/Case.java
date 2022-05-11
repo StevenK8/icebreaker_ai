@@ -4,7 +4,7 @@ public class Case {
 
     private String value;
     private int scoreCase;
-    private boolean isVisited;
+    private boolean isVisited = false;
 
     public Case(String pvalue, int pscore){
         value = pvalue;
@@ -31,7 +31,4 @@ public class Case {
     public void setIsVisited(boolean visit){
         isVisited = visit;
     }
-
-
-
 }

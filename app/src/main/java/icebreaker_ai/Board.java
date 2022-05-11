@@ -12,5 +12,6 @@ public class Board {
         //challenger.otherPlay("A5-B5");
         //System.out.println(challenger.boardToString());
         System.out.println(challenger.possibleMoves("BLACK"));
+        challenger.possibleMovesSearch("Black");
     }
 }

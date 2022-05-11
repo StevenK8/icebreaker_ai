@@ -1,6 +1,6 @@
 package icebreaker_ai;
 
-import org.checkerframework.checker.units.qual.C;
+// import org.checkerframework.checker.units.qual.C;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -135,6 +135,16 @@ public class MyChallenger implements IChallenger {
         return convertIndexToLetter(x) + (y + 1);
     }
 
+    private Point textToPoint(String text) {
+        if(text.length() == 2) {
+            return new Point(convertLetterToIndex(text.toCharArray()[0]),
+                    Integer.parseInt(text.toCharArray()[1] + "") - 1);
+        } else {
+            return new Point(convertLetterToIndex(text.toCharArray()[3]),
+                    Integer.parseInt(text.toCharArray()[4] + "") - 1);
+        }
+    }
+
     @Override
     public String tie() {
         return "égalité";
@@ -239,12 +249,13 @@ public class MyChallenger implements IChallenger {
 
     // Set<String> res = new java.util.HashSet<String>();
     // Set<String> resIfIceberg = new java.util.HashSet<String>();
-    // ArrayList<Point> possiblesPoint = new ArrayList<>();
+    // ArrayList<Point> possiblePoints = new ArrayList<>();
 
     private void addIfValid(Point p, Point p2, Set<String> res, Set<String> resIfIceberg,
-            ArrayList<Point> possiblesPoint) {
+            ArrayList<Point> possiblePoints) {
         if (isValid(p2.x, p2.y)) {
-            possiblesPoint.add(new Point(p2.x, p2.y));
+            possiblePoints.add(new Point(p2.x, p2.y));
+            board.get(p2.x).get(p2.y).setIsVisited(true);
             if (board.get(p2.x).get(p2.y).getValue().equals("o")) {
                 resIfIceberg.add(coordinatesToText(p.x, p.y) + "-" + coordinatesToText(p2.x, p2.y));
             }
@@ -252,54 +263,91 @@ public class MyChallenger implements IChallenger {
         }
     }
 
-    // private void iceberg_breadth_search(Set<String> res, Set<String> resIfIceberg) {
-    //     Set<Point> visited = new HashSet<>();
-    //     Set<String> list = new HashSet<>();
+    boolean isIceberg = false;
 
-    //     for (Point p : possiblesPoint) {
-    //         visited.add(p);
-    //         addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg);
-    //         if (getPossibleMoves(p, res, resIfIceberg)) { // iceberg found
+    private Set<Point> iceberg_breadth_search(Point start, ArrayList<Point> possiblePoints, Set<Point> visited) {
+        // Set<String> list = new HashSet<>();
+        ArrayList<Point> points = new ArrayList<>();
+        visited.add(start);
 
-    //         }
-    //     }
+        if(possiblePoints.isEmpty()) {
+            return visited;
+        }
+        System.out.println("bfs : " + start);
+        for (Point p : possiblePoints) {
+            if (!visited.contains(p)) {
+                visited.add(p);
+                points = stringsToPoints(getPossibleMoves(p));
+                if (isIceberg) { // iceberg found
+                    System.out.println("Iceberg found next to " + p.x + "," + p.y);
+                    return visited;
+                    // for (Point around : points) {
+                    //     board.get(around.x).get(around.y).setScore(0); // 0: iceberg
+                    // }
+                    // int i=1;
+                    // for (Point path : visited) {
+                    //     board.get(path.x).get(path.y).setScore(i);
+                    //     i++;
+                    // }
+                }else{
+                    // for (Point around : points){
+                    //     board.get(around.x).get(around.y).setScore(-2); // -2: no iceberg
+                    // }
+                    // Point first = iceberg_breadth_search(points, visited).iterator().next();
+                    // visited.add(first);
+                    return iceberg_breadth_search(p,points, visited);
+                    // possiblePoints.addAll(points);
+                }
+            }
+        }
+        return visited;
+    }
 
-    // }
+    // convert Set<String> to ArrayList<Point>
+    private ArrayList<Point> stringsToPoints(Set<String> list) {
+        ArrayList<Point> res = new ArrayList<>();
+        for (String s : list) {
+            res.add(textToPoint(s));
+        }
+        return res;
+    }
 
     private Set<String> getPossibleMoves(Point p) {
         Set<String> res = new java.util.HashSet<String>();
         Set<String> resIfIceberg = new java.util.HashSet<String>();
-        ArrayList<Point> possiblesPoint = new ArrayList<>();
+        ArrayList<Point> possiblePoints = new ArrayList<>();
         // Check cases a coté
-        addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblesPoint);
-        addIfValid(p, new Point(p.x, p.y + 1), res, resIfIceberg, possiblesPoint);
+        addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblePoints);
+        addIfValid(p, new Point(p.x, p.y + 1), res, resIfIceberg, possiblePoints);
 
         // Check ligne au dessus plus grande
         if (board.get((p.x) - 1).size() > board.get(p.x).size()) {
-            addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblesPoint);
-            addIfValid(p, new Point(p.x - 1, p.y + 1), res, resIfIceberg, possiblesPoint);
+            addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblePoints);
+            addIfValid(p, new Point(p.x - 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // Check ligne au dessus plus petite
         else if (board.get((p.x) - 1).size() < board.get(p.x).size()) {
-            addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblesPoint);
-            addIfValid(p, new Point(p.x - 1, p.y - 1), res, resIfIceberg, possiblesPoint);
+            addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblePoints);
+            addIfValid(p, new Point(p.x - 1, p.y - 1), res, resIfIceberg, possiblePoints);
         }
         // check ligne en dessous plus grande
         if (board.get((p.x) + 1).size() > board.get(p.x).size()) {
-            addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblesPoint);
-            addIfValid(p, new Point(p.x + 1, p.y + 1), res, resIfIceberg, possiblesPoint);
+            addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
+            addIfValid(p, new Point(p.x + 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // check ligne en dessous plus petite
         else if (board.get((p.x) + 1).size() < board.get(p.x).size()) {
-            addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblesPoint);
-            addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblesPoint);
+            addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
+            addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblePoints);
         }
 
         // Check si un iceberg est à coté --> on enleve les cases vides des possibles
         // moves
         if (resIfIceberg.isEmpty()) {
+            isIceberg = false;
             return res;
         } else {
+            isIceberg = true;
             return resIfIceberg;
         }
     }
@@ -308,11 +356,12 @@ public class MyChallenger implements IChallenger {
         Set<String> res = new java.util.HashSet<String>();
         // res.clear();
         // resIfIceberg.clear();
-        // possiblesPoint.clear();
+        // possiblePoints.clear();
 
         for (Point p : points) {
             res.addAll(getPossibleMoves(p));
         }
+        
 
         return res;
     }
@@ -325,6 +374,12 @@ public class MyChallenger implements IChallenger {
             return getPossibleMoves(blackPoints);
         } else {
             return null;
+        }
+    }
+
+    public void possibleMovesSearch(String role) {
+        for (Point p : blackPoints) {
+            System.out.println(iceberg_breadth_search(p, stringsToPoints(getPossibleMoves(p)), new HashSet<>()));
         }
     }
 
