@@ -54,54 +54,52 @@ public class MyChallenger implements IChallenger {
     @Override
     public void iPlay(String move) {
         ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
-        int ligneOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
+        int ligneOrigine = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
         int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
 
-        int ligneDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
+        int ligneDestination = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
         int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
 
         String joueurActuel = role.equals("RED") ? "R" : "B";
-        //reset l'ancienne position du bateau à .
+        // reset l'ancienne position du bateau à .
         board.get(ligneOrigine).get(colonneOrigine).setValue(".");
 
-        //on se déplace sur un iceberg --> on augmente le score du bon joueur
-        if(board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
-            && joueurActuel.equals("R")){
+        // on se déplace sur un iceberg --> on augmente le score du bon joueur
+        if (board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
+                && joueurActuel.equals("R")) {
             redScore++;
-        }
-        else if(board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
-                && joueurActuel.equals("B")){
+        } else if (board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
+                && joueurActuel.equals("B")) {
             blackScore++;
         }
-        //set la nouvelle position à R ou B
+        // set la nouvelle position à R ou B
         board.get(ligneDestination).get(colonneDestination).setValue(joueurActuel);
     }
 
     @Override
     public void otherPlay(String move) {
         ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
-        int ligneOrigine  = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
+        int ligneOrigine = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
         int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
 
-        int ligneDestination  = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
+        int ligneDestination = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
         int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
 
         String joueurActuel = board.get(ligneOrigine).get(colonneOrigine).equals("R") ? "R" : "B";
-        //reset l'ancienne position du bateau à .
+        // reset l'ancienne position du bateau à .
         board.get(ligneOrigine).get(colonneOrigine).setValue(".");
 
-        //on se déplace sur un iceberg --> on augmente le score du bon joueur
-        if(board.get(ligneDestination).get(colonneDestination).equals(".")
-                && joueurActuel.equals("R")){
+        // on se déplace sur un iceberg --> on augmente le score du bon joueur
+        if (board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("R")) {
             redScore++;
-        }
-        else if(board.get(ligneDestination).get(colonneDestination).equals(".")
-                && joueurActuel.equals("B")){
+        } else if (board.get(ligneDestination).get(colonneDestination).equals(".")
+                && joueurActuel.equals("B")) {
             blackScore++;
         }
-        //set la nouvelle position à R ou B
+        // set la nouvelle position à R ou B
         board.get(ligneDestination).get(colonneDestination).setValue(joueurActuel);
-        
+
     }
 
     @Override
@@ -130,6 +128,10 @@ public class MyChallenger implements IChallenger {
         }
 
         return res;
+    }
+
+    private String coordinatesToText(int x, int y) {
+        return convertIndexToLetter(x) + (y + 1);
     }
 
     @Override
@@ -187,8 +189,8 @@ public class MyChallenger implements IChallenger {
                         // System.out.println(a);
                         a.remove(0);
                         ArrayList<Case> ligneCase = new ArrayList<>();
-                        for(String s : a){
-                            Case c = new Case(s,0);
+                        for (String s : a) {
+                            Case c = new Case(s, 0);
                             ligneCase.add(c);
                         }
                         board.add(ligneCase);
@@ -214,23 +216,20 @@ public class MyChallenger implements IChallenger {
         }
     }
 
-    private boolean isValid(int x, int y){
-        try{
-            if(!board.get(x).isEmpty() || !board.get(x).get(y).getValue().isEmpty()){
-                if(x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()){
-                    if(board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")){
+    private boolean isValid(int x, int y) {
+        try {
+            if (!board.get(x).isEmpty() || !board.get(x).get(y).getValue().isEmpty()) {
+                if (x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()) {
+                    if (board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")) {
                         return true;
-                    }
-                    else{
+                    } else {
                         return false;
                     }
-                }
-                else{
+                } else {
                     return false;
                 }
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             return false;
         }
@@ -349,14 +348,13 @@ public class MyChallenger implements IChallenger {
         }
     }
 
-    private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints) {
-        ArrayList<Point> resList = new ArrayList<>();
-        for(Point point : possiblePoints){
-            if(board.get(point.x).get(point.y).equals("o")){
-                resList.add(new Point(point.x, point.y));
-            }
-        }
-        return resList;
-    }
+//    private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints) {
+//
+//        for(Point point : possiblePoints){
+//            if(board.get(point.x).get(point.y).equals("o")){
+//
+//            }
+//        }
+//    }
 
 }
