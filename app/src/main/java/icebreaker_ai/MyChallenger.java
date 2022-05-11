@@ -145,9 +145,9 @@ public class MyChallenger implements IChallenger {
             if (c.getValue().equals("\u2022")) {
                 // res += "•" + " ";
                 // TODO : restauter le caractère "•"
-                res += "." + " ";
+                res += ".   ";
             } else {
-                res += c.getValue() + " ";
+                res += c.getValue() + "   ";
             }
 
         }
@@ -157,15 +157,15 @@ public class MyChallenger implements IChallenger {
     @Override
     public String boardToString() {
         String res = "Red Score : " + redScore + " --- Black Score : " + blackScore + "\n\n";
-        res += "A      " + getLigneToString(0) + "     \n" +
-                "B     " + getLigneToString(1) + "    \n" +
-                "C    " + getLigneToString(2) + "   \n" +
-                "D   " + getLigneToString(3) + "  \n" +
+        res += "A           " + getLigneToString(0) + "     \n" +
+                "B        " + getLigneToString(1) + "    \n" +
+                "C      " + getLigneToString(2) + "   \n" +
+                "D    " + getLigneToString(3) + "  \n" +
                 "E  " + getLigneToString(4) + " \n" +
-                "F   " + getLigneToString(5) + "  \n" +
-                "G    " + getLigneToString(6) + "   \n" +
-                "H     " + getLigneToString(7) + "    \n" +
-                "I      " + getLigneToString(8) + "     ";
+                "F    " + getLigneToString(5) + "  \n" +
+                "G      " + getLigneToString(6) + "   \n" +
+                "H        " + getLigneToString(7) + "    \n" +
+                "I          " + getLigneToString(8) + "     ";
 
         return res;
     }
