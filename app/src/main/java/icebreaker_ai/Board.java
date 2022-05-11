@@ -8,9 +8,9 @@ public class Board {
         System.out.println(challenger.defeat());
         // challenger.iPlay("D2-C2");
         challenger.setRole("RED");
-        challenger.iPlay("A1-A2");
-        challenger.otherPlay("A5-B5");
-        System.out.println(challenger.boardToString());
+        //challenger.iPlay("A1-A2");
+        //challenger.otherPlay("A5-B5");
+        //System.out.println(challenger.boardToString());
         System.out.println(challenger.possibleMoves("BLACK"));
     }
 }

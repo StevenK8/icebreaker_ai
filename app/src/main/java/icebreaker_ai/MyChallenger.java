@@ -1,7 +1,11 @@
 package icebreaker_ai;
 
+import org.checkerframework.checker.units.qual.C;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -14,7 +18,7 @@ public class MyChallenger implements IChallenger {
     private final static int MAXSCORE = 28;
     private int redScore = 0;
     private int blackScore = 0;
-    private ArrayList<ArrayList<String>> board = new ArrayList<ArrayList<String>>();
+    private ArrayList<ArrayList<Case>> board = new ArrayList<ArrayList<Case>>();
 
     private ArrayList<Point> redPoints = new ArrayList<Point>();
     private ArrayList<Point> blackPoints = new ArrayList<Point>();
@@ -58,19 +62,19 @@ public class MyChallenger implements IChallenger {
 
         String joueurActuel = role.equals("RED") ? "R" : "B";
         //reset l'ancienne position du bateau à .
-        board.get(ligneOrigine).set(colonneOrigine, ".");
+        board.get(ligneOrigine).get(colonneOrigine).setValue(".");
 
         //on se déplace sur un iceberg --> on augmente le score du bon joueur
-        if(board.get(ligneDestination).get(colonneDestination).equals(".")
+        if(board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
             && joueurActuel.equals("R")){
             redScore++;
         }
-        else if(board.get(ligneDestination).get(colonneDestination).equals(".")
+        else if(board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
                 && joueurActuel.equals("B")){
             blackScore++;
         }
         //set la nouvelle position à R ou B
-        board.get(ligneDestination).set(colonneDestination, joueurActuel);
+        board.get(ligneDestination).get(colonneDestination).setValue(joueurActuel);
     }
 
     @Override
@@ -84,7 +88,7 @@ public class MyChallenger implements IChallenger {
 
         String joueurActuel = board.get(ligneOrigine).get(colonneOrigine).equals("R") ? "R" : "B";
         //reset l'ancienne position du bateau à .
-        board.get(ligneOrigine).set(colonneOrigine, ".");
+        board.get(ligneOrigine).get(colonneOrigine).setValue(".");
 
         //on se déplace sur un iceberg --> on augmente le score du bon joueur
         if(board.get(ligneDestination).get(colonneDestination).equals(".")
@@ -96,7 +100,7 @@ public class MyChallenger implements IChallenger {
             blackScore++;
         }
         //set la nouvelle position à R ou B
-        board.get(ligneDestination).set(colonneDestination, joueurActuel);
+        board.get(ligneDestination).get(colonneDestination).setValue(joueurActuel);
         
     }
 
@@ -135,13 +139,13 @@ public class MyChallenger implements IChallenger {
 
     private String getLigneToString(int ligne) {
         String res = "";
-        for (String s : board.get(ligne)) {
-            if (s.equals("\u2022")) {
+        for (Case c : board.get(ligne)) {
+            if (c.getValue().equals("\u2022")) {
                 // res += "•" + " ";
                 // TODO : restauter le caractère "•"
                 res += "." + " ";
             } else {
-                res += s + " ";
+                res += c.getValue() + " ";
             }
 
         }
@@ -182,7 +186,12 @@ public class MyChallenger implements IChallenger {
                         ArrayList<String> a = new ArrayList<String>(Arrays.asList(line.trim().split("\\s+")));
                         // System.out.println(a);
                         a.remove(0);
-                        board.add(a);
+                        ArrayList<Case> ligneCase = new ArrayList<>();
+                        for(String s : a){
+                            Case c = new Case(s,0);
+                            ligneCase.add(c);
+                        }
+                        board.add(ligneCase);
                         if (a.contains("R") || a.contains("B")) {
                             int i = 0;
                             for (String s : a) {
@@ -207,9 +216,9 @@ public class MyChallenger implements IChallenger {
 
     private boolean isValid(int x, int y){
         try{
-            if(!board.get(x).isEmpty() || !board.get(x).get(y).isEmpty()){
+            if(!board.get(x).isEmpty() || !board.get(x).get(y).getValue().isEmpty()){
                 if(x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()){
-                    if(board.get(x).get(y).equals("\u2022") || board.get(x).get(y).equals("o")){
+                    if(board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")){
                         return true;
                     }
                     else{
@@ -230,55 +239,69 @@ public class MyChallenger implements IChallenger {
 
     private Set<String> getPossibleMoves(ArrayList<Point> points) {
         Set<String> res = new java.util.HashSet<String>();
+        ArrayList<Point> possiblesPoint = new ArrayList<>();
+
         for (Point p : points) {
             //Check cases a coté
             if(isValid(p.x, p.y-1)){
+                possiblesPoint.add(new Point(p.x, p.y-1));
                 res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
             }
             if(isValid(p.x, p.y + 1)){
+                possiblesPoint.add(new Point(p.x, p.y+1));
                 res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y + 2));
             }
 
             // Check ligne au dessus plus grande
             if(board.get((p.x) - 1).size() > board.get(p.x).size()){
                 if(isValid(p.x - 1,  p.y)){
+                    possiblesPoint.add(new Point(p.x-1, p.y));
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
                 }
                 if(isValid(p.x - 1,  p.y + 1)){
+                    possiblesPoint.add(new Point(p.x-1, p.y+1));
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 2));
                 }
             }
             // Check ligne au dessus plus petite
             else if(board.get((p.x) - 1).size() < board.get(p.x).size()){
                 if(isValid(p.x - 1,  p.y)){
+                    possiblesPoint.add(new Point(p.x-1, p.y));
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y+1));
                 }
                 if(isValid(p.x - 1,  p.y-1)){
+                    possiblesPoint.add(new Point(p.x-1, p.y-1));
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
                 }
             }
-
             //check ligne en dessous plus grande
             if(board.get((p.x) + 1).size() > board.get(p.x).size()){
                 if(isValid(p.x + 1,  p.y)){
+                    possiblesPoint.add(new Point(p.x+1, p.y));
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
                 }
                 if(isValid(p.x + 1,  p.y + 1)) {
+                    possiblesPoint.add(new Point(p.x+1, p.y+1));
                     res.add(convertIndexToLetter(p.x) + (p.y + 1) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 2));
                 }
             }
             //check ligne en dessous plus petite
             else if(board.get((p.x) + 1).size() < board.get(p.x).size()){
                 if(isValid(p.x + 1,  p.y)) {
+                    possiblesPoint.add(new Point(p.x+1, p.y));
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
                 }
                 if(isValid(p.x + 1,  p.y-1)) {
+                    possiblesPoint.add(new Point(p.x, p.y-1));
                     res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
                 }
               }
 
 
         }
+
+        //Check si un iceberg est proche --> on enleve les cases vides des possibles moves
+        //removeUselessMoves(possiblesPoint);
 
         return res;
     }
@@ -293,5 +316,14 @@ public class MyChallenger implements IChallenger {
             return null;
         }
     }
+
+//    private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints) {
+//
+//        for(Point point : possiblePoints){
+//            if(board.get(point.x).get(point.y).equals("o")){
+//
+//            }
+//        }
+//    }
 
 }
