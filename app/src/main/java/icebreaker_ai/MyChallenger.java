@@ -37,7 +37,7 @@ public class MyChallenger implements IChallenger {
     @Override
     public void setRole(String role) {
         this.role = role;
-        
+
     }
 
     private int convertLetterToIndex(char c) {
@@ -110,9 +110,9 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public String victory() {
-        String res = redScore==MAXSCORE ? "RED" : blackScore==MAXSCORE ? "BLACK" : "";
+        String res = redScore == MAXSCORE ? "RED" : blackScore == MAXSCORE ? "BLACK" : "";
 
-        if(res != ""){
+        if (res != "") {
             res += " WINS !";
         }
 
@@ -121,9 +121,9 @@ public class MyChallenger implements IChallenger {
 
     @Override
     public String defeat() {
-        String res = redScore==MAXSCORE ? "BLACK" : blackScore==MAXSCORE ? "RED" : "";
+        String res = redScore == MAXSCORE ? "BLACK" : blackScore == MAXSCORE ? "RED" : "";
 
-        if(res != ""){
+        if (res != "") {
             res += " LOSE !";
         }
 
@@ -242,97 +242,103 @@ public class MyChallenger implements IChallenger {
         ArrayList<Point> possiblesPoint = new ArrayList<>();
 
         for (Point p : points) {
-            //Check cases a coté
-            if(isValid(p.x, p.y-1)){
-                possiblesPoint.add(new Point(p.x, p.y-1));
-                if(board.get(p.x).get(p.y-1).getValue().equals("o")){
-                    resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
+            // Check cases a coté
+            if (isValid(p.x, p.y - 1)) {
+                possiblesPoint.add(new Point(p.x, p.y - 1));
+                if (board.get(p.x).get(p.y - 1).getValue().equals("o")) {
+                    resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x,p.y-1));
                 }
-                res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
+                res.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x,p.y-1));
             }
-            if(isValid(p.x, p.y + 1)){
-                possiblesPoint.add(new Point(p.x, p.y+1));
-                if(board.get(p.x).get(p.y+1).getValue().equals("o")){
-                    resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y));
+            if (isValid(p.x, p.y + 1)) {
+                possiblesPoint.add(new Point(p.x, p.y + 1));
+                if (board.get(p.x).get(p.y + 1).getValue().equals("o")) {
+                    resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x,p.y-1));
                 }
-                res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter(p.x)+(p.y + 2));
+                res.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x,p.y+1));
             }
 
             // Check ligne au dessus plus grande
-            if(board.get((p.x) - 1).size() > board.get(p.x).size()){
-                if(isValid(p.x - 1,  p.y)){
-                    possiblesPoint.add(new Point(p.x-1, p.y));
-                    if(board.get(p.x-1).get(p.y).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
+            if (board.get((p.x) - 1).size() > board.get(p.x).size()) {
+                if (isValid(p.x - 1, p.y)) {
+                    possiblesPoint.add(new Point(p.x - 1, p.y));
+                    if (board.get(p.x - 1).get(p.y).getValue().equals("o")) {
+                        resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x-1,p.y));
                     }
-                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 1));
+                    res.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x-1,p.y));
                 }
-                if(isValid(p.x - 1,  p.y + 1)){
-                    possiblesPoint.add(new Point(p.x-1, p.y+1));
-                    if(board.get(p.x-1).get(p.y+1).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 2));
+                if (isValid(p.x - 1, p.y + 1)) {
+                    possiblesPoint.add(new Point(p.x - 1, p.y + 1));
+                    if (board.get(p.x - 1).get(p.y + 1).getValue().equals("o")) {
+                        resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x-1,p.y+1));
                     }
-                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y + 2));
+                    res.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x-1,p.y+1));
                 }
             }
             // Check ligne au dessus plus petite
-            else if(board.get((p.x) - 1).size() < board.get(p.x).size()){
-                if(isValid(p.x - 1,  p.y)){
-                    possiblesPoint.add(new Point(p.x-1, p.y));
-                    if(board.get(p.x-1).get(p.y).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y+1));
+            else if (board.get((p.x) - 1).size() < board.get(p.x).size()) {
+                if (isValid(p.x - 1, p.y)) {
+                    possiblesPoint.add(new Point(p.x - 1, p.y));
+                    if (board.get(p.x - 1).get(p.y).getValue().equals("o")) {
+                        resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) - 1)
+                                + (p.y + 1));
                     }
-                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y+1));
+                    res.add(coordinatesToText(p.x,p.y) + "-" + coordinatesToText(p.x-1,p.y));
                 }
-                if(isValid(p.x - 1,  p.y-1)){
-                    possiblesPoint.add(new Point(p.x-1, p.y-1));
-                    if(board.get(p.x-1).get(p.y-1).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
+                if (isValid(p.x - 1, p.y - 1)) {
+                    possiblesPoint.add(new Point(p.x - 1, p.y - 1));
+                    if (board.get(p.x - 1).get(p.y - 1).getValue().equals("o")) {
+                        resIfIceberg.add(
+                                coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) - 1) + (p.y));
                     }
-                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)-1)+(p.y));
-                }
-            }
-            //check ligne en dessous plus grande
-            if(board.get((p.x) + 1).size() > board.get(p.x).size()){
-                if(isValid(p.x + 1,  p.y)){
-                    possiblesPoint.add(new Point(p.x+1, p.y));
-                    if(board.get(p.x+1).get(p.y).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
-                    }
-                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
-                }
-                if(isValid(p.x + 1,  p.y + 1)) {
-                    possiblesPoint.add(new Point(p.x+1, p.y+1));
-                    if(board.get(p.x+1).get(p.y+1).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x) + (p.y + 1) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 2));
-                    }
-                    res.add(convertIndexToLetter(p.x) + (p.y + 1) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 2));
+                    res.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) - 1) + (p.y));
                 }
             }
-            //check ligne en dessous plus petite
-            else if(board.get((p.x) + 1).size() < board.get(p.x).size()){
-                if(isValid(p.x + 1,  p.y)) {
-                    possiblesPoint.add(new Point(p.x+1, p.y));
-                    if(board.get(p.x+1).get(p.y).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+            // check ligne en dessous plus grande
+            if (board.get((p.x) + 1).size() > board.get(p.x).size()) {
+                if (isValid(p.x + 1, p.y)) {
+                    possiblesPoint.add(new Point(p.x + 1, p.y));
+                    if (board.get(p.x + 1).get(p.y).getValue().equals("o")) {
+                        resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1)
+                                + (p.y + 1));
                     }
-                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y + 1));
+                    res.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 1));
                 }
-                if(isValid(p.x + 1,  p.y-1)) {
-                    possiblesPoint.add(new Point(p.x, p.y-1));
-                    if(board.get(p.x).get(p.y-1).getValue().equals("o")){
-                        resIfIceberg.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
+                if (isValid(p.x + 1, p.y + 1)) {
+                    possiblesPoint.add(new Point(p.x + 1, p.y + 1));
+                    if (board.get(p.x + 1).get(p.y + 1).getValue().equals("o")) {
+                        resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1)
+                                + (p.y + 2));
                     }
-                    res.add(convertIndexToLetter(p.x)+ (p.y +1) +"-"+ convertIndexToLetter((p.x)+1)+(p.y));
+                    res.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 2));
+                }
+            }
+            // check ligne en dessous plus petite
+            else if (board.get((p.x) + 1).size() < board.get(p.x).size()) {
+                if (isValid(p.x + 1, p.y)) {
+                    possiblesPoint.add(new Point(p.x + 1, p.y));
+                    if (board.get(p.x + 1).get(p.y).getValue().equals("o")) {
+                        resIfIceberg.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1)
+                                + (p.y + 1));
+                    }
+                    res.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1) + (p.y + 1));
+                }
+                if (isValid(p.x + 1, p.y - 1)) {
+                    possiblesPoint.add(new Point(p.x, p.y - 1));
+                    if (board.get(p.x).get(p.y - 1).getValue().equals("o")) {
+                        resIfIceberg.add(
+                                coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1) + (p.y));
+                    }
+                    res.add(coordinatesToText(p.x,p.y) + "-" + convertIndexToLetter((p.x) + 1) + (p.y));
                 }
             }
         }
 
-        //Check si un iceberg est à coté --> on enleve les cases vides des possibles moves
-        if(resIfIceberg.isEmpty()){
+        // Check si un iceberg est à coté --> on enleve les cases vides des possibles
+        // moves
+        if (resIfIceberg.isEmpty()) {
             return res;
-        }
-        else{
+        } else {
             return resIfIceberg;
         }
     }
@@ -348,13 +354,14 @@ public class MyChallenger implements IChallenger {
         }
     }
 
-//    private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints) {
-//
-//        for(Point point : possiblePoints){
-//            if(board.get(point.x).get(point.y).equals("o")){
-//
-//            }
-//        }
-//    }
+    // private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints)
+    // {
+    //
+    // for(Point point : possiblePoints){
+    // if(board.get(point.x).get(point.y).equals("o")){
+    //
+    // }
+    // }
+    // }
 
 }
