@@ -1,12 +1,12 @@
  Red Score : 25 --- Black Score : 26
 
- A          •   •   •   •   •
+ A          R   •   •   •   B
  B        •   •   •   •   •   •
  C      •   •   •   •   o   •   •
  D    •   •   •   •   •   R   R   •
- E  o   •   B   •   •   •   o   o   •
+ E  B   •   B   •   •   •   o   o   R
  F    •   •   •   •   •   •   B   •
  G      •   •   •   •   •   •   •
  H        •   •   •   •   •   •
- I          R   •   •   o   •
+ I          R   •   •   o   B
 

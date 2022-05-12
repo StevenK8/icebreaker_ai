@@ -2,13 +2,10 @@ package icebreaker_ai;
 
 // import org.checkerframework.checker.units.qual.C;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.awt.Point;
 import java.io.BufferedReader;
@@ -18,7 +15,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class MyChallenger implements IChallenger {
-    private final static int MAXSCORE = 28;
+    public final static int MAXSCORE = 28;
     private int redScore = 0;
     private int blackScore = 0;
     private ArrayList<ArrayList<Case>> board = new ArrayList<ArrayList<Case>>();
@@ -40,7 +37,30 @@ public class MyChallenger implements IChallenger {
     @Override
     public void setRole(String role) {
         this.role = role;
+    }
 
+    public String getRole(){
+        return role;
+    }
+
+    public int getRedScore(){
+        return redScore;
+    }
+    public int getBlackScore(){
+        return blackScore;
+    }
+
+    public void switchRole(){
+        if(role.equals("RED")){
+            role = "BLACK";
+        }
+        else{
+            role.equals("RED");
+        }
+    }
+
+    public boolean isOver(){
+        return redScore==MAXSCORE || blackScore==MAXSCORE;
     }
 
     private int convertLetterToIndex(char c) {
@@ -68,15 +88,32 @@ public class MyChallenger implements IChallenger {
         board.get(ligneOrigine).get(colonneOrigine).setValue(".");
 
         // on se déplace sur un iceberg --> on augmente le score du bon joueur
-        if (board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
+        if (board.get(ligneDestination).get(colonneDestination).getValue().equals("o")
                 && joueurActuel.equals("R")) {
             redScore++;
-        } else if (board.get(ligneDestination).get(colonneDestination).getValue().equals(".")
+            System.out.println("RED won a point");
+        } else if (board.get(ligneDestination).get(colonneDestination).getValue().equals("o")
                 && joueurActuel.equals("B")) {
             blackScore++;
+            System.out.println("BLACK won a point");
         }
         // set la nouvelle position à R ou B
         board.get(ligneDestination).get(colonneDestination).setValue(joueurActuel);
+
+        if(joueurActuel.equals("R")){
+            for(Point p : redPoints){
+                if(p.x == ligneOrigine && p.y == colonneOrigine){
+                    p.setLocation(new Point(ligneDestination, colonneDestination));
+                }
+            }
+        }
+        else{
+            for(Point p : blackPoints){
+                if(p.x == ligneOrigine && p.y == colonneOrigine){
+                    p.setLocation(new Point(ligneDestination, colonneDestination));
+                }
+            }
+        }
     }
 
     @Override
@@ -88,21 +125,36 @@ public class MyChallenger implements IChallenger {
         int ligneDestination = convertLetterToIndex(deplacement.get(1).toCharArray()[0]);
         int colonneDestination = Integer.parseInt(deplacement.get(1).toCharArray()[1] + "") - 1;
 
-        String joueurActuel = board.get(ligneOrigine).get(colonneOrigine).equals("R") ? "R" : "B";
+        String joueurActuel = board.get(ligneOrigine).get(colonneOrigine).equals("R") ? "B" : "R";
         // reset l'ancienne position du bateau à .
         board.get(ligneOrigine).get(colonneOrigine).setValue(".");
 
         // on se déplace sur un iceberg --> on augmente le score du bon joueur
-        if (board.get(ligneDestination).get(colonneDestination).equals(".")
+        if (board.get(ligneDestination).get(colonneDestination).equals("o")
                 && joueurActuel.equals("R")) {
             redScore++;
-        } else if (board.get(ligneDestination).get(colonneDestination).equals(".")
+            System.out.println("RED won a point");
+        } else if (board.get(ligneDestination).get(colonneDestination).equals("o")
                 && joueurActuel.equals("B")) {
             blackScore++;
+            System.out.println("BLACk won a point");
         }
         // set la nouvelle position à R ou B
         board.get(ligneDestination).get(colonneDestination).setValue(joueurActuel);
-
+        if(joueurActuel.equals("R")){
+            for(Point p : redPoints){
+                if(p.x == ligneOrigine && p.y == colonneOrigine){
+                    p.setLocation(new Point(ligneDestination, colonneDestination));
+                }
+            }
+        }
+        else{
+            for(Point p : blackPoints){
+                if(p.x == ligneOrigine && p.y == colonneOrigine){
+                    p.setLocation(new Point(ligneDestination, colonneDestination));
+                }
+            }
+        }
     }
 
     @Override
