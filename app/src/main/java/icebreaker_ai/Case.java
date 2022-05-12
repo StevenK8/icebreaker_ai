@@ -41,6 +41,7 @@ public class Case {
     public Point getPoint(){
         return position;
     }
+    
     public void setPoint(Point p){
         position = p;
     }

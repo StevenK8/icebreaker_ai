@@ -168,7 +168,71 @@ public class MyChallenger implements IChallenger {
         String res = redScore == MAXSCORE ? "RED" : blackScore == MAXSCORE ? "BLACK" : "";
 
         if (res != "") {
-            res += " WINS !";
+            res += " WINS !\n";
+            res += "WWWWWWWWWWWWWNWWWWWWWWWWWWWWWWWWWWWWWWWWWWMWWWWWWWWWWWWWWMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWMWWMWWWWWWWWWMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWMMMMWNNXKKNMMWWWMWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWMMNx:;,'...xMMWWWWWWMWWWWWWWWWWWWWWWWWWWWMMMWOlllodxkOO0KXNWMMMMMMMMWNNWMMWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWMMWo .co;  lWMMWWWWWWWWMMN000OO0000000000KWMNc.,,'.   ....lOkddooooc;,,kMMMMMMMMMMMMMMMMMMMMWWWWW"+
+            "WWWWMMk..,kx. ;KMMWWWWWWWWMMk...,c,...':'...:KMK,,d0Nx.  .cc.co. .lolloo' cNW0doooollllcccc:xWMMWWWW"+
+            "WWWWMMK,  cO, .kMMWWWWWWWWMMx.  ,Ok.'okl.   ,KMk..;kK0x. 'Oo.dO.'kd.  .oO,;KWl ..   ...  ...:XMMWWWW"+
+            "WWWWMMNc  ,Oc  oWMMWWWWWWWMMx.   l0kOd.     ,KWd.,d0o,kx.:Kc.kK,c0;    .ko'kWo.;l'  ck:. ;l.;XMMWWWW"+
+            "WWWWWMMx. .xd. :NMMWWWWWWWMMx.   lXkdxl.    ,0Nc cKK: ,Odx0;,KNc'Od.   ;0c.dWd. :c.,l;l;.l: ,KMMWWWW"+
+            "WWWWWMMO'  lk' '0MMWWWWWWWMMx.   lO' :O:    '0K, oW0,  ,OWk.cNWd.'ddlloxc. lNd. .c:l: ,lcl. ,0MMWWWW"+
+            "WWWWWMMX:  ,d, .xMMWWWMWWWMMx.   ck' .xd.   'Ok. .;'.   ,d:.oWMk. .;loo:;:cxNx.  'dl.  ;x;  'OMMWWWW"+
+            "WWMWWMMWo   ....dWMWWWMWWWMMx.   ..   ;xdll;,OXkxddollc:;,';OMMN0O0KKXNWWMMMMk.   ..    .   .kMMWWWW"+
+            "WWWWWWMMKddxkO0KNMMWWWWWWWMMx.         .',,.,OMMMMMMMMMMWWNNWMMMMMMMMMMMMMMMM0c,;;;:::::ccccoKMMWWWW"+
+            "WWWWWWWMMMMMMMWWWWWWWWWWWWMMXkxxxxxxxxxxxxxxONMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWWWWMMMMMMMMMMMMWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWWNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNNNNNNNNNNNNNNNNNNNWMMWNWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWMMNKK0OOkxdoolcckWMMNNNWWMMMMMMMWx,''''''''''''''''':0MMMMMMMMWWNXNMMWWWWWWWW"+
+            "WWWWWWWWMMMMMMMMMMMMMMMMMx'.....   .,. :NMWd,;;;::cclldKo 'clllllc:'       .kNkollc:;;;,'oNMMWWWWWWW"+
+            "WWWWWMMW0dddddoooollllcxNx. ,dO;   ;0l ,KMX:.okdlllol..ko .oKd;;;;lkl.     .kN:.:oooooo:.;KMMWWWWWWW"+
+            "WWWWWMMN: ..   ..    ..,KO'  ;Kd.',cKd..OM0, :0c...''.,0o  ;O:    .dx.     .kWo.,kKc.... 'OMMWWWWWWW"+
+            "WWMWWMMNc.:l.  :k:  ,o.,0X;  .kKdoodKO..xMk. lXxoolo, :Xo  ,0klllokd'      .kMx. cKxlool..xMMWWWWWWW"+
+            "WWWWWMMWl  cc ,l:l, cc 'ONl  .dO'   oK, lWd .dk,.,,,. oWo  ,0d,,,;xx.      .OMO' ;Kk:;,'. oWMMWWWWWW"+
+            "WWWWWMMWo  .l;c: ;l:l, .OMd.  lO,   ;x, :Xl .k0l:::;..xWo  ;O:    ,Oc      .OMK; 'Ox'',;,.cNMMWWWWWW"+
+            "WWWWWWMWd   ;ko.  :kc. .kMk.  ...       ,Ox;;loooooo,'OWo  ,O:    .xo      .OMNc .cxooooc':XMMWWWWWW"+
+            "WWMWWWMMd.  .'.   ...  .xMK;...'',;:ccloxXMWWNXXK0OOO0NWo  .'.     :kc'... .OMWOlloodxxkO0KWMMWWWWWW"+
+            "WWWWWWMMk'...''''',,,,;:0MWX0KXXNWWMMMMMMMMWWWWWWWWWMMMWo           'clll:..OMMMMMMMMMMMMWWWWWWWWWWW"+
+            "WWWWWWMMWXXXXXNNNNNWWWWWMMMWWWWWWWWWWWWWWWWWWWWWWWWWWWMMOccccccccccccccccccoKMMWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMMMMMMMMMMWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWNNNNNNNNNNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMWkcclodxkO0KXXNWMMMMMMMMWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMX: '::,.  ...'',;:clod0WMWWWMWWWWWW"+
+            "WWWWWWWWWWMMWWNNNXXKK0000OOkkxxddddKMMKxoooooddoddddddddddddddxKM0' ;xXO'        .:;.  oWMWWWWWWWWWW"+
+            "WWWWWWWWWWMMk;''''.......         .dMMx.       ..''''..       .dMx.  '0x.        :Xd. .kMMWWWWWWWWWW"+
+            "WWWWWWWWWWMMx.  ....         ':.   oWMk.    .;dOXNNNNX0x:.    .xWl   :Xo         oNc  ,KMMWWWWWWWWWW"+
+            "WWWWWWWWWWMMk.  ;dkk,       :0x.   lWMx.   ;ONXkl:;;:lxXW0:.  .dK;   oX:        .xK,  cNMMWWWWWWWWWW"+
+            "WWWWWWWWWWMMO.    .o0o.   .l0o.    cNMx.  cXWO,        ,kWNl. .dO.  .k0'        '0k. .dMMMWWMWWWWWWW"+
+            "WWWWWWWWWWMM0'      ;Ok, .d0c.     :XMx. '0M0'          .kMK, .dd.  ,Kx.        :Xd. .OMMWWWWWWWWWWW"+
+            "WWWWWWWWWWMMK,       .dOdkO;       ,KMx. :NWd.           cNWl .dl   ,Kx.       .dXc  ;KMMWWWWWWWWWWW"+
+            "WWWWWWWWWWMMX:        .cK0,        '0Mx. :XWo            cNWl .l;   .oKl.     .c0d.  lWMMWWWWWWWWWWW"+
+            "WWWWWWWWWWMMNc         .kk.        .OMx. '0MO'          .kMK; .;.    .ckkocccokkc.  .xMMWWWWWWWWWWWW"+
+            "WWWWWWWWWWMMWl         .xO.        .kMx.  cXWk'        'kWNl. .:l::,,'.':loolc,.    'OMMWWWWWWWWWWWW"+
+            "WWWWWWWWWWWMWo         .d0,        .xMx.  .:0WXxc;,,;cxXWKc.  .xMMMWNXXK0Okxdolcc:;,lXMMWWWWWWWWWWWW"+
+            "WWWWWWWWWWWMMd.         ',.        .dWx.    .cxKNNNNNNKkc.    .xMMMWWWWWWMMMMMMMMMWNWMMWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWMMO:,;;::cccclloooddxxkkOXWx.       .',;;,'.       .xMMWNWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWMMWWWWMMMMMMMMMMMMMMMMMMMMMKoclllcclllllllllclllclll0MMWNWWWWWWWWWWWWWWWWWWWWMWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWNWWWWWWWMMMMMMMMMMMMMMMMMMMMWWWMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWWWMMMMMMMMMMMMMMMMMMMMWWWWWWWWWWWWWWWWWWMMNXKK00OOkxdoolcc:;;,oXMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWWWMMXkkkkkkkkkkkkkkkkkkKWMWNNWMMNXNWMMMMMMMMx'.....        .,;. '0MMMMWWWWMMMMMMMMMMMMMMMMMWWWWWWW"+
+            "WWWWMMo                  cNMMNWMMXc',;:lodxO0Nx. :dxkl.      ,0O' .kMMMWx,;;:::ccclllooodddkXMMWWWWW"+
+            "WWWMMWo                  cNMMWWMMk. ..      ,OO' ':ckNd.     oNo. .dMMMN:  ......          .OMMWWWWW"+
+            "WWWMMMo                  cNMMMMMWo  :xkx,   :XK;    .xXo.   'OK,   cNMMX; ,kK000OOOkkxxx:. '0MMWWWWW"+
+            "WWWMMWo    ';;'.         cNMMMMMK;  .;O0,  .dWNc     .xXo.  cNd.   ;KMMK, .;oKM0lllooodd:. ,KMMWWWWW"+
+            "WWWMMWo   .oKWO'         cNMMMMMk.   ;Kx.  'OMWd.     .kXl..kX;    'OMM0'   '0Wo           ;XMMWWWWW"+
+            "MWWMMMo     cNO'         cNMMMMWl    oNc   cNMMk.      .kXlcXx.    .xMMO.   ,KWd'.......   :NMMWWWWW"+
+            "WWWMMMo     :XO'         cNMMMMK,   .k0'  .xMMM0'       .kXXXc      oWMk.   :XWNXKKKK00d.  lWMMWWWWW"+
+            "WWWMMWo     :XO'         cNMMMMx.   :Xd.  ,0MMMX;        .odc.      cNMx.   cNNo,;;::cc;.  oWMMWWMWW"+
+            "WWWMMWo     :XO'         cNMMMNc   .dX:   lNMMMWl   ....'',;::cllodd0WMd.   lWK;          .dMMWWWMWW"+
+            "WWWMMWo     :N0,......   cNMMM0'   .OO.  .xMMMMMXkkO00KXNNWWMMMMMMMMMMWo    oWK:....      .xMMWWWWWW"+
+            "WWWMMWo     :XN0OOOOOx'  cNMMMd.   :Xo   ;KMMWWWMMWWMWWWWWWWWWWWWWWWMMNc   .dMWX000OOkkd' .kMMWWWWWW"+
+            "WWWMMWo     .,;;;;;;;,.  cNMMX:    .;.   lWMMWNWWWWWWWWWWWWWWWWWWWWWMMN:    '::ccclllool. 'OMMWWWWWW"+
+            "WWWWMMx'..''.............oWMMXd;,'..    .kMMWWWMWWMMWWWWWWWWWWWWWWWWMMWOddooollcccc:::;;,,lKMMWWWWWW"+
+            "WWWWMMWXXXXXXXXXXXXXXXXXXNMMMMMMWNK0OkxoxXMMWWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMMMMMMMMMMWWWWWMMWWWWWWW"+
+            "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWMMMMMMMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW"+
+            "WWMWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
         }
 
         return res;
@@ -179,7 +243,34 @@ public class MyChallenger implements IChallenger {
         String res = redScore == MAXSCORE ? "BLACK" : blackScore == MAXSCORE ? "RED" : "";
 
         if (res != "") {
-            res += " LOSE !";
+            res += " LOSES !\n";
+            res +=
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXkokWM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMXOo:cldNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWk:;;:loxNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXKKXNM0,.;::loxNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMN0kdolc::coxx'.,::loxNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNXKOK0dc:;::;;;::cll,..::loxNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXK0OOOOO0KXWMWKOOkkxxdoolccl:..,::l;...';:ldc..;:llxNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMWXOkkkO0NWMMMMMMMNOxoc::;;;;;::cldl,,;;:::::c:ccxl. ,::dl;' .;:ldd,.,:llxNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMXkl:;;;;:coxONMMMNOl:::cccccc:cccco; .,cccccccc:::c:. '::oodo',:codko..;llxNM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMW0c;:::::::clllokXNx::ccccl:'....,;ll.  ':cccc,......;, .;:clc;::cooxXO'.;lokNM\n"+
+            "MMMMMMWWMMMMMMMMMMMMWO:;c:cc:::cccclo::o::cccclo,.',;,'..... .:ccll,',;;:xXd .;ccc:c:cookNMN:.,cokNM\n"+
+            "MMMN0kdldXMMMMMMMMMMXl;c::cl,..';cccco:..:cccccooodxxxdoc:kl .:ccllcclcloKMk..;:cc:::cooxXMWo..',xWM\n"+
+            "WKxl::d: ;XMMMMMMMMMO::cccoc. ,dl;ccclo,..:ccccccllllllllokl .:ccccccccdx0MO'.,:ccc:::clooONO. .,oKW\n"+
+            "k;;:::ld,.lNMMMMMMMMk::cccd: .OMO::cccdc  ..',;::::ccccclcc,..:ccc:;;,,;lKMK, ,:ccl:,;::coodkl',clo0\n"+
+            "0c;::::od'.dWMMMMMMM0::cccdl.'0M0c:cccdc  .,'..  ...,ccccco:..:ccc,....;kNWK; ':c:ll..;:::clol'':cl0\n"+
+            "WO:;::::oo..kWMMMMMMNo;cccldc.dNx::ccld; .,cllcc:;,.':ccccoc..:ccc;,::cloddx: .:::co, .,:::::,. ..lN\n"+
+            "MWk:;:::coc.'OMMMMMNKd,;ccccolcl::cccol. .:cc:::::::ccccclo, .:cccc::::::ood: .:::cdc   .'...';;,oXM\n"+
+            "MMWk;;:::co:.,0NKkdllc,.;:cccccccccclo' .,cccccccccccccllc'  .:cccccc::::oodc .;;,,,co, .,:okKWWWMMM\n"+
+            "MMMNx;::::co:.;l:;::coo'..;::ccccccl:.  ...',,;;;::::::,. .. .,,,,''''''.';kl     .'xWXOKNMMMMMMMMMM\n"+
+            "MMMMNx;::::cc:;:::::::oo' ':,'','''.  'xOo:'...     ....;oOc  ........''';xNOlodxO0XWMMMMMMMMMMMMMMM\n"+
+            "MMMMMNx;:::::::::::::;,;. .lko:,''';lkXMMMWNK0kxxddxxO0XWMWKOO0000KKXXXNNWMMMMMMMMMMMMMMMMMMMMMMMMMM\n"+
+            "MMMMMMNx;;::::::;,'..  .':lkNMMWNNNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n"+
+            "MMMMMMMNx;;:;,'.. ..;okKNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n"+
+            "MMMMMMMMWk;..  .;oOXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n"+
+            "MMMMMMMMMWKdclkXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n"+
+            "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM\n";
         }
 
         return res;
@@ -419,19 +510,6 @@ public class MyChallenger implements IChallenger {
             isIceberg = true;
             return resIfIceberg;
         }
-    }
-
-    private Set<String> getPossibleMoves(ArrayList<Point> points) {
-        Set<String> res = new java.util.HashSet<String>();
-        // res.clear();
-        // resIfIceberg.clear();
-        // possiblePoints.clear();
-
-        for (Point p : points) {
-            res.addAll(getPossibleMoves(p));
-        }
-
-        return res;
     }
 
     @Override
