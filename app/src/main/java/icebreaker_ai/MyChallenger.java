@@ -282,7 +282,6 @@ public class MyChallenger implements IChallenger {
 
     private ArrayList<Point> bfs(Point start){
         LinkedList<Point> queue = new LinkedList<Point>();
-        ArrayList<Boolean> visited = new ArrayList<>();
         ArrayList<Point> res = new ArrayList<>();
         queue.add(start);
         Case cStart = getCaseFromPoint(start);
@@ -318,47 +317,6 @@ public class MyChallenger implements IChallenger {
             }
         }
         return positionIcebergProche;
-    }
-
-    private Set<Point> iceberg_breadth_search(Point start, Queue<Point> possiblePoints, Set<Point> visited) {
-        // Set<String> list = new HashSet<>();
-        Queue<Point> queue = new LinkedList<Point>(possiblePoints);
-        // ArrayList<Point> points = new ArrayList<>();
-        visited.add(start);
-        Point p;
-
-        if (queue.isEmpty()) {
-            return visited;
-        }
-        System.out.println("bfs : " + start);
-        while (!queue.isEmpty()) {
-            p = queue.poll();
-            if (!visited.contains(p)) {
-                visited.add(p);
-                queue.addAll(stringsToPoints(getPossibleMoves(p)));
-                if (isIceberg) { // iceberg found
-                    System.out.println("Iceberg found next to " + p.x + "," + p.y + " (" + coordinatesToText(p.x, p.y) + ")");
-                    // return visited;
-                    // for (Point around : points) {
-                    // board.get(around.x).get(around.y).setScore(0); // 0: iceberg
-                    // }
-                    // int i=1;
-                    // for (Point path : visited) {
-                    // board.get(path.x).get(path.y).setScore(i);
-                    // i++;
-                    // }
-                } else {
-                    // for (Point around : points){
-                    // board.get(around.x).get(around.y).setScore(-2); // -2: no iceberg
-                    // }
-                    // Point first = iceberg_breadth_search(points, visited).iterator().next();
-                    // visited.add(first);
-                    // return iceberg_breadth_search(p,queue, visited);
-                    // possiblePoints.addAll(points);
-                }
-            }
-        }
-        return visited;
     }
 
     // convert Set<String> to ArrayList<Point>
@@ -454,7 +412,7 @@ public class MyChallenger implements IChallenger {
 
     private ArrayList<Point> bfsVoisin(ArrayList<Point> voisins, ArrayList<Point> icebergs){
         LinkedList<Point> queue = new LinkedList<Point>();
-        ArrayList<Boolean> visited = new ArrayList<>();
+        // ArrayList<Boolean> visited = new ArrayList<>();
         ArrayList<Point> res = new ArrayList<Point>();
         int min = Integer.MAX_VALUE;
 
