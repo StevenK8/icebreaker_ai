@@ -368,20 +368,7 @@ public class MyChallenger implements IChallenger {
             return resIfIceberg;
         }
     }
-
-    private Set<String> getPossibleMoves(ArrayList<Point> points) {
-        Set<String> res = new java.util.HashSet<String>();
-        // res.clear();
-        // resIfIceberg.clear();
-        // possiblePoints.clear();
-
-        for (Point p : points) {
-            res.addAll(getPossibleMoves(p));
-        }
-
-        return res;
-    }
-
+    
     @Override
     public Set<String> possibleMoves(String role) {
         Set<String> listPossibleMove = new HashSet<>();
