@@ -225,26 +225,19 @@ public class MyChallenger implements IChallenger {
                 System.out.println("Unreadable file Error : " + e);
             }
         } catch (IOException e) {
+            System.out.println("IOException Error : " + e);
             e.printStackTrace();
         }
     }
 
     private boolean isValid(int x, int y) {
-        try {
-            if (!board.get(x).isEmpty() || !board.get(x).get(y).getValue().isEmpty()) {
-                if (x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size()) {
-                    if (board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+
+        if (x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size() && !board.isEmpty()
+                && !board.get(x).isEmpty()
+                || !board.get(x).get(y).getValue().isEmpty()) {
+            if (board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")) {
+                return true;
             }
-        } catch (Exception e) {
-            System.out.println(e);
-            return false;
         }
         return false;
     }
@@ -322,26 +315,27 @@ public class MyChallenger implements IChallenger {
         Set<String> resIfIceberg = new java.util.HashSet<String>();
         ArrayList<Point> possiblePoints = new ArrayList<>();
         // Check cases a coté
+
         addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblePoints);
         addIfValid(p, new Point(p.x, p.y + 1), res, resIfIceberg, possiblePoints);
 
         // Check ligne au dessus plus grande
-        if (p.x > 0 && board.get((p.x) - 1).size() > board.get(p.x).size()) {
+        if (board.get((p.x) - 1).size() > board.get(p.x).size()) {
             addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x - 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // Check ligne au dessus plus petite
-        else if (p.x > 0 && board.get((p.x) - 1).size() < board.get(p.x).size()) {
+        else if (board.get((p.x) - 1).size() < board.get(p.x).size()) {
             addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x - 1, p.y - 1), res, resIfIceberg, possiblePoints);
         }
         // check ligne en dessous plus grande
-        if (p.x < board.size() && board.get((p.x) + 1).size() > board.get(p.x).size()) {
+        if (board.get((p.x) + 1).size() > board.get(p.x).size()) {
             addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x + 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // check ligne en dessous plus petite
-        else if (p.x < board.size() && board.get((p.x) + 1).size() < board.get(p.x).size()) {
+        else if (board.get((p.x) + 1).size() < board.get(p.x).size()) {
             addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblePoints);
         }
