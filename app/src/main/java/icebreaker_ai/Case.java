@@ -1,14 +1,20 @@
 package icebreaker_ai;
 
+import java.awt.*;
+
 public class Case {
 
     private String value;
     private int scoreCase;
+    private int scoreVoisin;
     private boolean isVisited = false;
+    private Point position;
 
-    public Case(String pvalue, int pscore){
+    public Case(String pvalue, Point p, int pscore, int pscoreVoisin){
         value = pvalue;
         scoreCase = pscore;
+        position = p;
+        scoreVoisin = 0;
     }
 
     public String getValue(){
@@ -31,4 +37,19 @@ public class Case {
     public void setIsVisited(boolean visit){
         isVisited = visit;
     }
+
+    public Point getPoint(){
+        return position;
+    }
+    public void setPoint(Point p){
+        position = p;
+    }
+
+    public int getScoreVoisin(){
+        return scoreVoisin;
+    }
+    public void setScoreVoisin(int score){
+        scoreVoisin = score;
+    }
+
 }

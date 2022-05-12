@@ -202,8 +202,8 @@ public class MyChallenger implements IChallenger {
                         // System.out.println(a);
                         a.remove(0);
                         ArrayList<Case> ligneCase = new ArrayList<>();
-                        for (String s : a) {
-                            Case c = new Case(s, 0);
+                        for (int i = 0; i < a.size(); i++) {
+                            Case c = new Case(a.get(i), new Point(l - 3, i), 0, 0);
                             ligneCase.add(c);
                         }
                         board.add(ligneCase);
@@ -234,8 +234,8 @@ public class MyChallenger implements IChallenger {
 
         if ((x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size())) {
             if (!board.isEmpty()
-                    || !board.get(x).isEmpty()
-                    || !board.get(x).get(y).getValue().isEmpty()) {
+                    && !board.get(x).isEmpty()
+                    && !board.get(x).get(y).getValue().isEmpty()) {
                 if (board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")) {
                     return true;
                 }
@@ -252,7 +252,7 @@ public class MyChallenger implements IChallenger {
             ArrayList<Point> possiblePoints) {
         if (isValid(p2.x, p2.y)) {
             possiblePoints.add(new Point(p2.x, p2.y));
-            board.get(p2.x).get(p2.y).setIsVisited(true);
+            //board.get(p2.x).get(p2.y).setIsVisited(true);
             if (board.get(p2.x).get(p2.y).getValue().equals("o")) {
                 resIfIceberg.add(coordinatesToText(p.x, p.y) + "-" + coordinatesToText(p2.x, p2.y));
             }
@@ -261,6 +261,64 @@ public class MyChallenger implements IChallenger {
     }
 
     boolean isIceberg = false;
+
+    private Case getCaseFromPoint(Point p){
+        return board.get(p.x).get(p.y);
+    }
+
+    private Point getPointFromCase(Case c){
+        return new Point(c.getPoint().x, c.getPoint().y);
+    }
+
+    private void clearVisitedAndScore(){
+        for(int i = 0; i < board.size(); i++){
+            for(int j = 0; j < board.get(i).size(); j++){
+                board.get(i).get(j).setScore(0);
+                board.get(i).get(j).setScoreVoisin(0);
+                board.get(i).get(j).setIsVisited(false);
+            }
+        }
+    }
+
+    private ArrayList<Point> bfs(Point start){
+        LinkedList<Point> queue = new LinkedList<Point>();
+        ArrayList<Boolean> visited = new ArrayList<>();
+        ArrayList<Point> res = new ArrayList<>();
+        queue.add(start);
+        Case cStart = getCaseFromPoint(start);
+        cStart.setScore(0);
+
+        while(queue.size() != 0){
+            start = queue.poll();
+            if(getCaseFromPoint(start).getValue().equals("o")){
+                res.add(start);
+            }
+
+            ArrayList<Point> adj = stringsToPoints(getPossibleMoves(start));
+            for(Point p : adj){
+                Case c = getCaseFromPoint(p);
+                if(!c.isVisited()){
+                    c.setIsVisited(true);
+                    c.setScore(getCaseFromPoint(start).getScore() + 1);
+                    queue.add(p);
+                }
+            }
+        }
+        clearVisitedAndScore();
+        ArrayList<Point> positionIcebergProche = new ArrayList<>();
+        int min = Integer.MAX_VALUE;
+        for(Point p : res){
+            if(getCaseFromPoint(p).getScore() < min){
+                positionIcebergProche.clear();
+                positionIcebergProche.add(p);
+                min = getCaseFromPoint(p).getScore();
+            }
+            else if(getCaseFromPoint(p).getScore() == min){
+                positionIcebergProche.add(p);
+            }
+        }
+        return positionIcebergProche;
+    }
 
     private Set<Point> iceberg_breadth_search(Point start, Queue<Point> possiblePoints, Set<Point> visited) {
         // Set<String> list = new HashSet<>();
@@ -340,7 +398,7 @@ public class MyChallenger implements IChallenger {
         // check ligne en dessous plus petite
         else if (p.x < board.size() && p.y > 0 && board.get((p.x) + 1).size() < board.get(p.x).size()) {
             addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
-            addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblePoints);
+            addIfValid(p, new Point(p.x + 1, p.y - 1), res, resIfIceberg, possiblePoints);
         }
 
         // Check si un iceberg est à coté --> on enleve les cases vides des possibles
@@ -379,20 +437,60 @@ public class MyChallenger implements IChallenger {
     }
 
     public void possibleMovesSearch(String role) {
+        ArrayList<Point> listPossibleMove = new ArrayList<>();
         for (Point p : blackPoints) {
-            Queue<Point> queue = new LinkedList<Point>(stringsToPoints(getPossibleMoves(p)));
-            System.out.println(iceberg_breadth_search(p, queue, new HashSet<>()));
+            ArrayList<Point> voisins = new ArrayList<Point>(stringsToPoints(getPossibleMoves(p)));
+            ArrayList<Point> listIceberg = bfs(p);
+
+            listPossibleMove.addAll(bfsVoisin(voisins, listIceberg));
         }
+        //remove doublons from listPossibleMove
+        Set<Point> set = new HashSet<>(listPossibleMove);
+        listPossibleMove.clear();
+        listPossibleMove.addAll(set);
+        for(Point p : listPossibleMove)
+        System.out.println(coordinatesToText(p.x,p.y));
     }
 
-    // private ArrayList<Point> removeUselessMoves(ArrayList<Point> possiblePoints)
-    // {
-    //
-    // for(Point point : possiblePoints){
-    // if(board.get(point.x).get(point.y).equals("o")){
-    //
-    // }
-    // }
-    // }
+    private ArrayList<Point> bfsVoisin(ArrayList<Point> voisins, ArrayList<Point> icebergs){
+        LinkedList<Point> queue = new LinkedList<Point>();
+        ArrayList<Boolean> visited = new ArrayList<>();
+        ArrayList<Point> res = new ArrayList<Point>();
+        int min = Integer.MAX_VALUE;
+
+        for(Point voisin : voisins){
+            Point voisinOriginal = voisin;
+            queue.add(voisin);
+            Case cStart = getCaseFromPoint(voisin);
+            cStart.setScore(0);
+            while(queue.size() != 0){
+                Point p = queue.poll();
+                //todo : change "B" --> getRole
+                if(icebergs.contains(getCaseFromPoint(p).getPoint())){
+                    if(getCaseFromPoint(p).getScoreVoisin() < min){
+                        min = getCaseFromPoint(p).getScoreVoisin();
+                        res.clear();
+                        res.add(voisinOriginal);
+                    }
+                    else if(getCaseFromPoint(p).getScoreVoisin() == min){
+                        res.add(voisinOriginal);
+                    }
+                }
+
+                ArrayList<Point> adj = stringsToPoints(getPossibleMoves(p));
+                for(Point pAdj : adj){
+                    Case c = getCaseFromPoint(pAdj);
+                    if(!c.isVisited()){
+                        c.setIsVisited(true);
+                        c.setScoreVoisin(getCaseFromPoint(p).getScoreVoisin() + 1);
+                        queue.add(pAdj);
+                    }
+                }
+            }
+            clearVisitedAndScore();
+        }
+
+        return res;
+    }
 
 }
