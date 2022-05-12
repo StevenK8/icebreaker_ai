@@ -279,7 +279,7 @@ public class MyChallenger implements IChallenger {
                 visited.add(p);
                 queue.addAll(stringsToPoints(getPossibleMoves(p)));
                 if (isIceberg) { // iceberg found
-                    System.out.println("Iceberg found next to " + p.x + "," + p.y);
+                    System.out.println("Iceberg found next to " + p.x + "," + p.y + " (" + coordinatesToText(p.x, p.y) + ")");
                     // return visited;
                     // for (Point around : points) {
                     // board.get(around.x).get(around.y).setScore(0); // 0: iceberg
