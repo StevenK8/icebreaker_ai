@@ -344,7 +344,7 @@ public class MyChallenger implements IChallenger {
             addIfValid(p, new Point(p.x - 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // Check ligne au dessus plus petite
-        else if (p.x > 0 && p.y > 0 && board.get((p.x) - 1).size() < board.get(p.x).size()) {
+        else if (p.x > 0 && board.get((p.x) - 1).size() < board.get(p.x).size()) {
             addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x - 1, p.y - 1), res, resIfIceberg, possiblePoints);
         }
@@ -354,7 +354,7 @@ public class MyChallenger implements IChallenger {
             addIfValid(p, new Point(p.x + 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // check ligne en dessous plus petite
-        else if (p.x < board.size() && p.y > 0 && board.get((p.x) + 1).size() < board.get(p.x).size()) {
+        else if (p.x < board.size() && board.get((p.x) + 1).size() < board.get(p.x).size()) {
             addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x + 1, p.y - 1), res, resIfIceberg, possiblePoints);
         }
@@ -395,25 +395,23 @@ public class MyChallenger implements IChallenger {
     }
 
     public void possibleMovesSearch(String role) {
-        ArrayList<Point> listPossibleMove = new ArrayList<>();
+        Set<String> listPossibleMove = new HashSet<>();
         for (Point p : blackPoints) {
             ArrayList<Point> voisins = new ArrayList<Point>(stringsToPoints(getPossibleMoves(p)));
             ArrayList<Point> listIceberg = bfs(p);
 
-            listPossibleMove.addAll(bfsVoisin(voisins, listIceberg));
+            listPossibleMove.addAll(bfsVoisin(p, voisins, listIceberg));
         }
-        //remove doublons from listPossibleMove
-        Set<Point> set = new HashSet<>(listPossibleMove);
-        listPossibleMove.clear();
-        listPossibleMove.addAll(set);
-        for(Point p : listPossibleMove)
-        System.out.println(coordinatesToText(p.x,p.y));
+        for(String s : listPossibleMove)
+        System.out.println(s);
     }
 
-    private ArrayList<Point> bfsVoisin(ArrayList<Point> voisins, ArrayList<Point> icebergs){
+    private Set<String> bfsVoisin(Point source, ArrayList<Point> voisins, ArrayList<Point> icebergs){
         LinkedList<Point> queue = new LinkedList<Point>();
         // ArrayList<Boolean> visited = new ArrayList<>();
         ArrayList<Point> res = new ArrayList<Point>();
+
+        Set<String> resultat = new HashSet<>();
         int min = Integer.MAX_VALUE;
 
         for(Point voisin : voisins){
@@ -428,10 +426,13 @@ public class MyChallenger implements IChallenger {
                     if(getCaseFromPoint(p).getScoreVoisin() < min){
                         min = getCaseFromPoint(p).getScoreVoisin();
                         res.clear();
+                        resultat.clear();
                         res.add(voisinOriginal);
+                        resultat.add(coordinatesToText(source.x, source.y)+"-"+coordinatesToText(voisinOriginal.x,voisinOriginal.y));
                     }
                     else if(getCaseFromPoint(p).getScoreVoisin() == min){
                         res.add(voisinOriginal);
+                        resultat.add(coordinatesToText(source.x, source.y)+"-"+coordinatesToText(voisinOriginal.x,voisinOriginal.y));
                     }
                 }
 
@@ -448,7 +449,7 @@ public class MyChallenger implements IChallenger {
             clearVisitedAndScore();
         }
 
-        return res;
+        return resultat;
     }
 
 }
