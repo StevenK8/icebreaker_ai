@@ -232,11 +232,13 @@ public class MyChallenger implements IChallenger {
 
     private boolean isValid(int x, int y) {
 
-        if (x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size() && !board.isEmpty()
-                && !board.get(x).isEmpty()
-                || !board.get(x).get(y).getValue().isEmpty()) {
-            if (board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")) {
-                return true;
+        if ((x >= 0 && x < board.size() && y >= 0 && y < board.get(x).size())) {
+            if (!board.isEmpty()
+                    || !board.get(x).isEmpty()
+                    || !board.get(x).get(y).getValue().isEmpty()) {
+                if (board.get(x).get(y).getValue().equals("\u2022") || board.get(x).get(y).getValue().equals("o")) {
+                    return true;
+                }
             }
         }
         return false;
@@ -317,25 +319,26 @@ public class MyChallenger implements IChallenger {
         // Check cases a coté
 
         addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblePoints);
+
         addIfValid(p, new Point(p.x, p.y + 1), res, resIfIceberg, possiblePoints);
 
         // Check ligne au dessus plus grande
-        if (board.get((p.x) - 1).size() > board.get(p.x).size()) {
+        if (p.x > 0 && board.get((p.x) - 1).size() > board.get(p.x).size()) {
             addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x - 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // Check ligne au dessus plus petite
-        else if (board.get((p.x) - 1).size() < board.get(p.x).size()) {
+        else if (p.x > 0 && p.y > 0 && board.get((p.x) - 1).size() < board.get(p.x).size()) {
             addIfValid(p, new Point(p.x - 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x - 1, p.y - 1), res, resIfIceberg, possiblePoints);
         }
         // check ligne en dessous plus grande
-        if (board.get((p.x) + 1).size() > board.get(p.x).size()) {
+        if (p.x < board.size() && p.y < board.get(p.x).size() && board.get((p.x) + 1).size() > board.get(p.x).size()) {
             addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x + 1, p.y + 1), res, resIfIceberg, possiblePoints);
         }
         // check ligne en dessous plus petite
-        else if (board.get((p.x) + 1).size() < board.get(p.x).size()) {
+        else if (p.x < board.size() && p.y > 0 && board.get((p.x) + 1).size() < board.get(p.x).size()) {
             addIfValid(p, new Point(p.x + 1, p.y), res, resIfIceberg, possiblePoints);
             addIfValid(p, new Point(p.x, p.y - 1), res, resIfIceberg, possiblePoints);
         }
