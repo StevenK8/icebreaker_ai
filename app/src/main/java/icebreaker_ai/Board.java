@@ -5,11 +5,14 @@ public class Board {
         MyChallenger challenger = new MyChallenger();
         challenger.setBoardFromFile("Plateau_initial.txt");
 
-        challenger.setRole("BLACK");
+        challenger.setRole("RED");
         while(!challenger.isOver()){
-            challenger.iPlay(challenger.possibleMoves("RED").iterator().next());
+            challenger.iPlay(challenger.possibleMoves(challenger.getRole()).iterator().next());
             System.out.println(challenger.boardToString());
-            challenger.otherPlay(challenger.possibleMoves("BLACK").iterator().next());
+            if(!challenger.isOver()){
+                challenger.otherPlay(challenger.possibleMoves(challenger.getRoleAdversaire()).iterator().next());
+
+            }
         }
     }
 }
