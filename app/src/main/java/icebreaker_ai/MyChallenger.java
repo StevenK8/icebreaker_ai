@@ -28,6 +28,7 @@ public class MyChallenger implements IChallenger {
 
     public MyChallenger() {
         role = "";
+        this.setBoardFromFile("Plateau_initial.txt");
     }
 
     @Override
@@ -126,8 +127,7 @@ public class MyChallenger implements IChallenger {
     
     @Override
     public String bestMove() {
-        // TODO Auto-generated method stub
-        return null;
+        return possibleMoves(getRole()).iterator().next();
     }
 
     @Override
