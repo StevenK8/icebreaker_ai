@@ -124,9 +124,110 @@ public class MyChallenger implements IChallenger {
 		}
 	}
 
+	private int eval(String role){
+		int score = 0;
+		if(role.equals("RED")){
+			for(Point p : redPoints){
+				score += board.get(p.x).get(p.y).getValue().equals("o") ? 1 : 0;
+			}
+		}
+		else{
+			for(Point p : blackPoints){
+				score += board.get(p.x).get(p.y).getValue().equals("o") ? 1 : 0;
+			}
+		}
+		return score;
+	}
+
+	private int maxMin(int depth, int nbLeaves, int nbNodes) {
+		if (depth == 4 || isOver()) {
+			nbLeaves++;
+			// Evaluate board with h while playerMaxRole is about to play
+			return eval(getRole());
+		} else {
+			nbNodes++;
+			int max = Integer.MAX_VALUE;
+			// Compute all possible moves for playerMaxRole
+			Set<String> allMoves = possibleMoves(getRole());
+			int newVal;
+			
+			for (String move : allMoves) {
+				play(move,getRole());
+				newVal = minMax(depth+1, nbLeaves, nbNodes);
+				if (newVal == Integer.MAX_VALUE) {
+					// It is considered that playerMax will favor
+					// the least deep case of playerMax-victory
+					newVal -= depth;
+				}
+				
+				max = Math.max(max, newVal);
+			}
+			
+			return max;
+		}
+	}
+
+	private int minMax(int depth, int nbLeaves, int nbNodes) {
+		if (depth == 4 || isOver()) {
+			nbLeaves++;
+			// Evaluate board with h while playerMinRole is about to play
+			return eval(getRole());
+		} else {
+			nbNodes++;
+			int min = Integer.MIN_VALUE;
+			// Compute all possible moves for playerMinRole
+			Set<String> allMoves = possibleMoves(getRole());
+			int newVal;
+			
+			for (String move : allMoves) {
+				play(move,getRole());
+				newVal =  maxMin(depth+1, nbLeaves, nbNodes);
+				if (newVal == Integer.MIN_VALUE) {
+					// It is considered that playerMin will favor
+					// the least deep case of playerMax-defeat
+					newVal += depth;
+				}
+				
+				min = Math.min(min, newVal);
+			}
+
+			return min;
+		}
+	}
+
 	@Override
 	public String bestMove() {
-		return possibleMoves(getRole()).iterator().next();
+		// Set<String> p = possibleMoves(getRole());
+		System.out.println("[MiniMax]");
+
+		int nbNodes = 1; // root node
+		int nbLeaves = 0;
+		int max = -100000000;
+		int newVal;
+
+		// Compute all possible moves for playerMaxRole
+		Set<String> allMoves = possibleMoves(getRole());
+		System.out.println("    * " + allMoves.size() + " possible moves");
+		String bestMove = (allMoves.size() == 0 ? null : allMoves.iterator().next());
+
+		
+		for (String move : allMoves) {
+			play(move, getRole());
+			newVal = minMax(1,nbLeaves,nbNodes);
+			//System.out.println("Le coup " + move + " a pour valeur minimax " + newVal);
+			if (newVal > max) {
+				max = newVal;
+				bestMove = move;
+			}
+		}
+		
+		System.out.println("    * " + nbNodes + " nodes explored");
+		System.out.println("    * " + nbLeaves + " leaves evaluated");
+		System.out.println("Best value is: " + max);
+		return bestMove;
+
+
+		// return possibleMoves(getRole()).iterator().next();
 	}
 
 	@Override
