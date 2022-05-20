@@ -126,36 +126,46 @@ public class MyChallenger implements IChallenger {
 	}
 
 	// Heuristic function
-	private int eval(String role){
+	private int eval(String role, MyChallenger challenger){
 		int score = 0;
-		if(role.equals("RED")){
-			for(Point p : redPoints){
-				score += board.get(p.x).get(p.y).getValue().equals("o") ? 1 : 0;
+		int val = 0;
+		for(String p : challenger.possibleMoves(role)){
+			val = isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1]))).size():0;
+			if(val > score){
+				score = val;
+			}
+
+			for(String p2 : challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1])))){
+				val = isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1]))).size():0;
+				if(val > score){
+					score = val;
+				}
+				for(String p3 : challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1])))){
+					val = isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p3.split("-")[1]))).size():0;
+					if(val > score){
+						score = val;
+					}
+				}
 			}
 		}
-		else{
-			for(Point p : blackPoints){
-				score += board.get(p.x).get(p.y).getValue().equals("o") ? 1 : 0;
-			}
-		}
+
 		return score;
 	}
 
 	private int maxMin(int depth, int nbLeaves, int nbNodes, MyChallenger challenger) {
-		ArrayList<ArrayList<Case>> oldBoard = board;
 		if (depth == 4 || isOver()) {
 			nbLeaves++;
 			// Evaluate board with h while playerMaxRole is about to play
-			return eval(getRole());
+			return eval(challenger.getRole(), challenger);
 		} else {
 			nbNodes++;
 			int max = Integer.MIN_VALUE;
 			// Compute all possible moves for playerMaxRole
-			Set<String> allMoves = possibleMoves(getRole());
+			Set<String> allMoves = challenger.possibleMoves(challenger.getRole());
 			int newVal;
 			
 			for (String move : allMoves) {
-				challenger.play(move,getRole());
+				challenger.play(move,challenger.getRole());
 				newVal = minMax(depth+1, nbLeaves, nbNodes, challenger);
 				if (newVal == Integer.MIN_VALUE) {
 					// It is considered that playerMax will favor
@@ -165,28 +175,25 @@ public class MyChallenger implements IChallenger {
 				
 				max = Math.max(max, newVal);
 			}
-
-			board = oldBoard;
 			
 			return max;
 		}
 	}
 
 	private int minMax(int depth, int nbLeaves, int nbNodes, MyChallenger challenger) {
-
 		if (depth == 4 || isOver()) {
 			nbLeaves++;
 			// Evaluate board with h while playerMinRole is about to play
-			return eval(getRoleAdversaire());
+			return eval(challenger.getRoleAdversaire(), challenger);
 		} else {
 			nbNodes++;
 			int min = Integer.MAX_VALUE;
 			// Compute all possible moves for playerMinRole
-			Set<String> allMoves = possibleMoves(getRole());
+			Set<String> allMoves = challenger.possibleMoves(challenger.getRoleAdversaire());
 			int newVal;
 			
 			for (String move : allMoves) {
-				challenger.play(move,getRoleAdversaire());
+				challenger.play(move,challenger.getRoleAdversaire());
 				newVal =  maxMin(depth+1, nbLeaves, nbNodes, challenger);
 				if (newVal == Integer.MAX_VALUE) {
 					// It is considered that playerMin will favor
