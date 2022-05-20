@@ -83,7 +83,8 @@ public class MyChallenger implements IChallenger {
 		
 	}
 
-	private void play(String move, String role){
+
+	public void play(String move, String role){
 		ArrayList<String> deplacement = new ArrayList<String>(Arrays.asList(move.split("-")));
 		int ligneOrigine = convertLetterToIndex(deplacement.get(0).toCharArray()[0]);
 		int colonneOrigine = Integer.parseInt(deplacement.get(0).toCharArray()[1] + "") - 1;
@@ -124,6 +125,7 @@ public class MyChallenger implements IChallenger {
 		}
 	}
 
+	// Heuristic function
 	private int eval(String role){
 		int score = 0;
 		if(role.equals("RED")){
@@ -139,22 +141,23 @@ public class MyChallenger implements IChallenger {
 		return score;
 	}
 
-	private int maxMin(int depth, int nbLeaves, int nbNodes) {
+	private int maxMin(int depth, int nbLeaves, int nbNodes, MyChallenger challenger) {
+		ArrayList<ArrayList<Case>> oldBoard = board;
 		if (depth == 4 || isOver()) {
 			nbLeaves++;
 			// Evaluate board with h while playerMaxRole is about to play
 			return eval(getRole());
 		} else {
 			nbNodes++;
-			int max = Integer.MAX_VALUE;
+			int max = Integer.MIN_VALUE;
 			// Compute all possible moves for playerMaxRole
 			Set<String> allMoves = possibleMoves(getRole());
 			int newVal;
 			
 			for (String move : allMoves) {
-				play(move,getRole());
-				newVal = minMax(depth+1, nbLeaves, nbNodes);
-				if (newVal == Integer.MAX_VALUE) {
+				challenger.play(move,getRole());
+				newVal = minMax(depth+1, nbLeaves, nbNodes, challenger);
+				if (newVal == Integer.MIN_VALUE) {
 					// It is considered that playerMax will favor
 					// the least deep case of playerMax-victory
 					newVal -= depth;
@@ -162,27 +165,30 @@ public class MyChallenger implements IChallenger {
 				
 				max = Math.max(max, newVal);
 			}
+
+			board = oldBoard;
 			
 			return max;
 		}
 	}
 
-	private int minMax(int depth, int nbLeaves, int nbNodes) {
+	private int minMax(int depth, int nbLeaves, int nbNodes, MyChallenger challenger) {
+
 		if (depth == 4 || isOver()) {
 			nbLeaves++;
 			// Evaluate board with h while playerMinRole is about to play
-			return eval(getRole());
+			return eval(getRoleAdversaire());
 		} else {
 			nbNodes++;
-			int min = Integer.MIN_VALUE;
+			int min = Integer.MAX_VALUE;
 			// Compute all possible moves for playerMinRole
 			Set<String> allMoves = possibleMoves(getRole());
 			int newVal;
 			
 			for (String move : allMoves) {
-				play(move,getRole());
-				newVal =  maxMin(depth+1, nbLeaves, nbNodes);
-				if (newVal == Integer.MIN_VALUE) {
+				challenger.play(move,getRoleAdversaire());
+				newVal =  maxMin(depth+1, nbLeaves, nbNodes, challenger);
+				if (newVal == Integer.MAX_VALUE) {
 					// It is considered that playerMin will favor
 					// the least deep case of playerMax-defeat
 					newVal += depth;
@@ -202,7 +208,7 @@ public class MyChallenger implements IChallenger {
 
 		int nbNodes = 1; // root node
 		int nbLeaves = 0;
-		int max = -100000000;
+		int max = Integer.MIN_VALUE;
 		int newVal;
 
 		// Compute all possible moves for playerMaxRole
@@ -210,10 +216,12 @@ public class MyChallenger implements IChallenger {
 		System.out.println("    * " + allMoves.size() + " possible moves");
 		String bestMove = (allMoves.size() == 0 ? null : allMoves.iterator().next());
 
-		
+		// ArrayList<ArrayList<Case>> oldBoard = board;
+		MyChallenger copy = new MyChallenger();
+		copy.setRole(getRole());
 		for (String move : allMoves) {
-			play(move, getRole());
-			newVal = minMax(1,nbLeaves,nbNodes);
+			copy.play(move, getRole());
+			newVal = minMax(1,nbLeaves,nbNodes, copy);
 			//System.out.println("Le coup " + move + " a pour valeur minimax " + newVal);
 			if (newVal > max) {
 				max = newVal;
