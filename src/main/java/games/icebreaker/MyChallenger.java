@@ -56,6 +56,15 @@ public class MyChallenger implements IChallenger {
 		return blackScore;
 	}
 
+	public int getScore(String r){
+		if(r.equals("RED")){
+			return redScore;
+		}
+		else{
+			return blackScore;
+		}
+	}
+
 	public boolean isOver(){
 		return redScore==MAXSCORE || blackScore==MAXSCORE;
 	}
@@ -98,11 +107,11 @@ public class MyChallenger implements IChallenger {
 		if (board.get(ligneDestination).get(colonneDestination).getValue().equals("o")
 				&& role.equals("RED")) {
 			redScore++;
-			System.out.println("RED won a point");
+			// System.out.println("RED won a point");
 		} else if (board.get(ligneDestination).get(colonneDestination).getValue().equals("o")
 				&& role.equals("BLACK")) {
 			blackScore++;
-			System.out.println("BLACK won a point");
+			// System.out.println("BLACK won a point");
 		}
 
 		// set la nouvelle position à R ou B
@@ -126,37 +135,38 @@ public class MyChallenger implements IChallenger {
 	}
 
 	// Heuristic function
-	private int eval(String role, MyChallenger challenger){
-		int score = 0;
-		int val = 0;
-		for(String p : challenger.possibleMoves(role)){
-			val = isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1]))).size():0;
-			if(val > score){
-				score = val;
-			}
+	private int eval(MyChallenger challenger){
+		// int score = 0;
+		// int val = 0;
+		// for(String p : challenger.possibleMoves(role)){
+		// 	val = challenger.isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1]))).size():0;
+		// 	if(val > score){
+		// 		score = val;
+		// 	}
 
-			for(String p2 : challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1])))){
-				val = isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1]))).size():0;
-				if(val > score){
-					score = val;
-				}
-				for(String p3 : challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1])))){
-					val = isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p3.split("-")[1]))).size():0;
-					if(val > score){
-						score = val;
-					}
-				}
-			}
-		}
+		// 	// for(String p2 : challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1])))){
+		// 	// 	val = challenger.isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1]))).size():0;
+		// 	// 	if(val > score){
+		// 	// 		score = val;
+		// 	// 	}
+		// 	// 	for(String p3 : challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1])))){
+		// 	// 		val = challenger.isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p3.split("-")[1]))).size():0;
+		// 	// 		if(val > score){
+		// 	// 			score = val;
+		// 	// 		}
+		// 	// 	}
+		// 	// }
+		// }
 
-		return score;
+		// return score;
+		return challenger.getScore(challenger.getRole())-challenger.getScore(challenger.getRoleAdversaire());
 	}
 
-	private int maxMin(int depth, int nbLeaves, int nbNodes, MyChallenger challenger) {
-		if (depth == 4 || isOver()) {
+	private int maxMin(int depth, MyChallenger challenger) {
+		if (depth == MAXDEPTH || challenger.isOver()) {
 			nbLeaves++;
 			// Evaluate board with h while playerMaxRole is about to play
-			return eval(challenger.getRole(), challenger);
+			return eval(challenger);
 		} else {
 			nbNodes++;
 			int max = Integer.MIN_VALUE;
@@ -164,57 +174,68 @@ public class MyChallenger implements IChallenger {
 			Set<String> allMoves = challenger.possibleMoves(challenger.getRole());
 			int newVal;
 			
+			// MyChallenger save = challenger;
 			for (String move : allMoves) {
 				challenger.play(move,challenger.getRole());
-				newVal = minMax(depth+1, nbLeaves, nbNodes, challenger);
-				if (newVal == Integer.MIN_VALUE) {
+				newVal = minMax(depth+1, challenger);
+				if (newVal == Integer.MAX_VALUE) {
+					System.out.println("NEWVAL = " + newVal);
 					// It is considered that playerMax will favor
 					// the least deep case of playerMax-victory
 					newVal -= depth;
 				}
 				
 				max = Math.max(max, newVal);
+				// challenger = save;
 			}
 			
 			return max;
 		}
 	}
 
-	private int minMax(int depth, int nbLeaves, int nbNodes, MyChallenger challenger) {
-		if (depth == 4 || isOver()) {
+
+	private int minMax(int depth, MyChallenger challenger) {
+		if (depth == MAXDEPTH || challenger.isOver()) {
 			nbLeaves++;
 			// Evaluate board with h while playerMinRole is about to play
-			return eval(challenger.getRoleAdversaire(), challenger);
+			return eval( challenger);
 		} else {
 			nbNodes++;
 			int min = Integer.MAX_VALUE;
 			// Compute all possible moves for playerMinRole
 			Set<String> allMoves = challenger.possibleMoves(challenger.getRoleAdversaire());
 			int newVal;
-			
+
+			// MyChallenger save = challenger;
 			for (String move : allMoves) {
 				challenger.play(move,challenger.getRoleAdversaire());
-				newVal =  maxMin(depth+1, nbLeaves, nbNodes, challenger);
-				if (newVal == Integer.MAX_VALUE) {
+				newVal =  maxMin(depth+1, challenger);
+				if (newVal == Integer.MIN_VALUE) {
+					System.out.println("NEWVAL = " + newVal);
 					// It is considered that playerMin will favor
 					// the least deep case of playerMax-defeat
 					newVal += depth;
 				}
 				
 				min = Math.min(min, newVal);
+				// challenger = save;
 			}
 
 			return min;
 		}
 	}
 
+	public int nbLeaves;
+	public int nbNodes;
+	public final static int MAXDEPTH = 4;
+
 	@Override
 	public String bestMove() {
 		// Set<String> p = possibleMoves(getRole());
 		System.out.println("[MiniMax]");
 
-		int nbNodes = 1; // root node
-		int nbLeaves = 0;
+		nbNodes = 1; // root node
+		nbLeaves = 0;
 		int max = Integer.MIN_VALUE;
 		int newVal;
 
@@ -228,12 +249,13 @@ public class MyChallenger implements IChallenger {
 		copy.setRole(getRole());
 		for (String move : allMoves) {
 			copy.play(move, getRole());
-			newVal = minMax(1,nbLeaves,nbNodes, copy);
+			newVal = minMax(1, copy);
 			//System.out.println("Le coup " + move + " a pour valeur minimax " + newVal);
 			if (newVal > max) {
 				max = newVal;
 				bestMove = move;
 			}
+			// copy = this;
 		}
 		
 		System.out.println("    * " + nbNodes + " nodes explored");
