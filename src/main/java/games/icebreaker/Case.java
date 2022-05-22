@@ -51,4 +51,8 @@ public class Case {
         scoreVoisin = score;
     }
 
+    public Case copy() {
+        return new Case(value, position);
+    }
+
 }

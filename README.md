@@ -21,4 +21,8 @@ Les seuls fichiers que vous devez impérativement conserver sont les suivants :
 
 ### Description de l'algorithme utilisé pour déterminer les coups possibles
 
-*À compléter*
+java -cp IB_1_o.jar games.icebreaker.IBDuel -p 4536 -g
+
+java -jar .\ia.jar -p 4536 -s localhost -c games.icebreaker.MyChallenger
+
+java -cp IB_1_o.jar iialib.games.contest.Client -p 4536 -s localhost -c games.icebreaker.IBAlphaBetaChallenger

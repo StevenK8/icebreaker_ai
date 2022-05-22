@@ -47,7 +47,7 @@ public class Board {
         array4.add(6, new Case("o", new Point(3,6)));
         array4.add(7, new Case("o", new Point(3,7)));
 
-        array5.add(0, new Case("R", new Point(4,0)));
+        array5.add(0, new Case("B", new Point(4,0)));
         array5.add(1, new Case("o", new Point(4,1)));
         array5.add(2, new Case("o", new Point(4,2)));
         array5.add(3, new Case("o", new Point(4,3)));
@@ -55,7 +55,7 @@ public class Board {
         array5.add(5, new Case("o", new Point(4,5)));
         array5.add(6, new Case("o", new Point(4,6)));
         array5.add(7, new Case("o", new Point(4,7)));
-        array5.add(8, new Case("B", new Point(4,8)));
+        array5.add(8, new Case("R", new Point(4,8)));
 
         array6.add(0, new Case("o", new Point(5,0)));
         array6.add(1, new Case("o", new Point(5,1)));
@@ -101,4 +101,6 @@ public class Board {
     public ArrayList<ArrayList<Case>> getBoard(){
         return board;
     }
+
+
 }

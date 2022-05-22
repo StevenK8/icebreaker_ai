@@ -4,7 +4,6 @@ import java.awt.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.List;
 
 import iialib.games.model.IChallenger;
 
@@ -20,6 +19,21 @@ public class MyChallenger implements IChallenger {
 
 	private String role;
 	private String roleAdversaire;
+
+	public MyChallenger(MyChallenger challenger) {
+		this.redScore = challenger.getRedScore();
+		this.blackScore = challenger.getBlackScore();
+		this.board = challenger.getBoard();
+		this.redPoints = challenger.getRedPoints();
+		this.blackPoints = challenger.getBlackPoints();
+		this.role = challenger.getRole();
+		this.roleAdversaire = challenger.getRoleAdversaire();
+		this.isIceberg = challenger.getIsIceberg();
+	}
+
+	public MyChallenger(){
+		
+	}
 
 	@Override
 	public String teamName() {
@@ -54,6 +68,22 @@ public class MyChallenger implements IChallenger {
 	}
 	public int getBlackScore(){
 		return blackScore;
+	}
+
+	public ArrayList<Point> getRedPoints(){
+		ArrayList<Point> p = new ArrayList<Point>();
+		for(Point point : redPoints){
+			p.add(new Point(point.x, point.y));
+		}
+		return p;
+	}
+
+	public ArrayList<Point> getBlackPoints(){
+		ArrayList<Point> p = new ArrayList<Point>();
+		for(Point point : blackPoints){
+			p.add(new Point(point.x, point.y));
+		}
+		return p;
 	}
 
 	public int getScore(String r){
@@ -136,29 +166,7 @@ public class MyChallenger implements IChallenger {
 
 	// Heuristic function
 	private int eval(MyChallenger challenger){
-		// int score = 0;
-		// int val = 0;
-		// for(String p : challenger.possibleMoves(role)){
-		// 	val = challenger.isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1]))).size():0;
-		// 	if(val > score){
-		// 		score = val;
-		// 	}
-
-		// 	// for(String p2 : challenger.getPossibleMoves(new Point(textToPoint(p.split("-")[1])))){
-		// 	// 	val = challenger.isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1]))).size():0;
-		// 	// 	if(val > score){
-		// 	// 		score = val;
-		// 	// 	}
-		// 	// 	for(String p3 : challenger.getPossibleMoves(new Point(textToPoint(p2.split("-")[1])))){
-		// 	// 		val = challenger.isIceberg?challenger.getPossibleMoves(new Point(textToPoint(p3.split("-")[1]))).size():0;
-		// 	// 		if(val > score){
-		// 	// 			score = val;
-		// 	// 		}
-		// 	// 	}
-		// 	// }
-		// }
-
-		// return score;
+		// System.out.println(MAXSCORE-challenger.getScore(challenger.getRole())-challenger.getScore(challenger.getRoleAdversaire()));
 		return challenger.getScore(challenger.getRole())-challenger.getScore(challenger.getRoleAdversaire());
 	}
 
@@ -176,8 +184,9 @@ public class MyChallenger implements IChallenger {
 			
 			// MyChallenger save = challenger;
 			for (String move : allMoves) {
-				challenger.play(move,challenger.getRole());
-				newVal = minMax(depth+1, challenger);
+				MyChallenger copy = challenger.copy();
+				copy.play(move,copy.getRole());
+				newVal = minMax(depth+1, copy);
 				if (newVal == Integer.MAX_VALUE) {
 					System.out.println("NEWVAL = " + newVal);
 					// It is considered that playerMax will favor
@@ -198,7 +207,7 @@ public class MyChallenger implements IChallenger {
 		if (depth == MAXDEPTH || challenger.isOver()) {
 			nbLeaves++;
 			// Evaluate board with h while playerMinRole is about to play
-			return eval( challenger);
+			return eval(challenger);
 		} else {
 			nbNodes++;
 			int min = Integer.MAX_VALUE;
@@ -208,8 +217,9 @@ public class MyChallenger implements IChallenger {
 
 			// MyChallenger save = challenger;
 			for (String move : allMoves) {
-				challenger.play(move,challenger.getRoleAdversaire());
-				newVal =  maxMin(depth+1, challenger);
+				MyChallenger copy = challenger.copy();
+				copy.play(move,copy.getRoleAdversaire());
+				newVal =  maxMin(depth+1, copy);
 				if (newVal == Integer.MIN_VALUE) {
 					System.out.println("NEWVAL = " + newVal);
 					// It is considered that playerMin will favor
@@ -227,7 +237,7 @@ public class MyChallenger implements IChallenger {
 
 	public int nbLeaves;
 	public int nbNodes;
-	public final static int MAXDEPTH = 4;
+	public final static int MAXDEPTH = 5;
 
 	@Override
 	public String bestMove() {
@@ -245,26 +255,48 @@ public class MyChallenger implements IChallenger {
 		String bestMove = (allMoves.size() == 0 ? null : allMoves.iterator().next());
 
 		// ArrayList<ArrayList<Case>> oldBoard = board;
-		MyChallenger copy = new MyChallenger();
-		copy.setRole(getRole());
+		// MyChallenger copy = this.copy();
+		// copy.setRole(getRole());
 		for (String move : allMoves) {
-			copy.play(move, getRole());
+			MyChallenger copy = this.copy();
+			copy.play(move, copy.getRole());
 			newVal = minMax(1, copy);
 			//System.out.println("Le coup " + move + " a pour valeur minimax " + newVal);
 			if (newVal > max) {
 				max = newVal;
 				bestMove = move;
 			}
-			// copy = this;
+			copy = this;
 		}
+
 		
 		System.out.println("    * " + nbNodes + " nodes explored");
 		System.out.println("    * " + nbLeaves + " leaves evaluated");
 		System.out.println("Best value is: " + max);
+		System.out.println("Best move is: " + bestMove);
 		return bestMove;
-
-
 		// return possibleMoves(getRole()).iterator().next();
+	}
+
+	private MyChallenger copy() {
+		MyChallenger copy = new MyChallenger(this);
+		return copy;
+	}
+
+	private boolean getIsIceberg() {
+		return this.isIceberg;
+	}
+
+	private ArrayList<ArrayList<Case>> getBoard() {
+		ArrayList<ArrayList<Case>> b = new ArrayList<ArrayList<Case>>();
+		for (ArrayList<Case> l : board) {
+			ArrayList<Case> l2 = new ArrayList<Case>();
+			for (Case c : l) {
+				l2.add(c.copy());
+			}
+			b.add(l2);
+		}
+		return b;
 	}
 
 	@Override
@@ -404,8 +436,8 @@ public class MyChallenger implements IChallenger {
 		for (Case c : board.get(ligne)) {
 			if (c.getValue().equals("\u2022")) {
 				// res += "•" + " ";
-				// TODO : restauter le caractère "•"
-				res += ".   ";
+				// OK : restauter le caractère "•"
+				res += "•   ";
 			} else {
 				res += c.getValue() + "   ";
 			}
