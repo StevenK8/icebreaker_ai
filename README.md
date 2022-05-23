@@ -19,7 +19,7 @@ Les seuls fichiers que vous devez impérativement conserver sont les suivants :
 
 2. écrire une courte description (un ou deux paragraphes, ci-dessous) de l'algorithme utilisé pour `possibleMoves`.
 
-### Description de l'algorithme utilisé pour déterminer les coups possibles
+### Commandes pour lancer les joueurs
 
 java -cp IB_1_o.jar games.icebreaker.IBDuel -p 4536 -g
 
