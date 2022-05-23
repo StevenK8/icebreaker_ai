@@ -167,7 +167,30 @@ public class MyChallenger implements IChallenger {
 	// Heuristic function
 	private int eval(MyChallenger challenger){
 		// System.out.println(MAXSCORE-challenger.getScore(challenger.getRole())-challenger.getScore(challenger.getRoleAdversaire()));
-		return challenger.getScore(challenger.getRole())-challenger.getScore(challenger.getRoleAdversaire());
+		if(challenger.getScore(challenger.getRole()) == MAXSCORE){
+			return Integer.MAX_VALUE;
+		}
+		else if(challenger.getScore(challenger.getRoleAdversaire()) == MAXSCORE){
+			return Integer.MIN_VALUE;
+		}
+		int val = 0;
+		val = challenger.getScore(challenger.getRole())-challenger.getScore(challenger.getRoleAdversaire())*8;
+
+		for (Point p : challenger.getRole().equals("RED") ? challenger.getRedPoints() : challenger.getBlackPoints()){
+			Set<String> voisins = getPossibleMoves(p);
+			if(getIsIceberg()){
+				val += voisins.size()*2;
+			}
+		}
+
+		for (Point p : challenger.getRoleAdversaire().equals("RED") ? challenger.getRedPoints() : challenger.getBlackPoints()){
+			Set<String> voisins = getPossibleMoves(p);
+			if(getIsIceberg()){
+				val -= voisins.size();
+			}
+		}
+
+		return val;
 	}
 
 	private int maxMin(int depth, MyChallenger challenger) {
@@ -237,7 +260,7 @@ public class MyChallenger implements IChallenger {
 
 	public int nbLeaves;
 	public int nbNodes;
-	public final static int MAXDEPTH = 5;
+	public final static int MAXDEPTH = 4;
 
 	@Override
 	public String bestMove() {
@@ -266,7 +289,6 @@ public class MyChallenger implements IChallenger {
 				max = newVal;
 				bestMove = move;
 			}
-			copy = this;
 		}
 
 		
